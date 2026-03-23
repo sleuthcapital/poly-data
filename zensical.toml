@@ -23,6 +23,7 @@ nav = [
     { "DataAPIClient" = "api/data-api.md" },
     { "ESPNClient" = "api/espn.md" },
     { "MarketFilter" = "api/markets.md" },
+    { "Coverage Registry" = "api/coverage.md" },
     { "I/O Utilities" = "api/io.md" },
     { "HTTP Internals" = "api/http.md" },
   ]},
