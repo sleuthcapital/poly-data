@@ -27,7 +27,8 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from poly_data import GammaClient, ClobClient, DataAPIClient, MarketFilter
+from poly_data import GammaClient, ClobClient, DataAPIClient, ESPNClient, MarketFilter
+from poly_data._http import GAMMA_API, get_json
 from poly_data.markets import detect_sport, parse_json_field, DrawMarketGroup
 
 ASSETS = ROOT / "docs" / "assets"
@@ -97,9 +98,17 @@ def fetch_all_data():
         active_only=True, sport_slugs=all_slugs,
     ))
 
-    # 2. Find a good H2H market with both tokens for price/book plots
+    # 2. Find a RESOLVED H2H market for price history (shows full game arc)
+    resolved_data = load_or_fetch("events_resolved_nba", lambda: get_json(
+        f"{GAMMA_API}/events",
+        params={"tag_slug": "nba", "closed": "true", "limit": 50,
+                "order": "endDate", "ascending": "false"},
+    ))
+    resolved_events = resolved_data if isinstance(resolved_data, list) else []
+
     h2h_market = None
-    for ev in events:
+    h2h_event = None
+    for ev in resolved_events:
         for mkt in ev.get("markets", []):
             if MarketFilter.is_head_to_head(mkt):
                 tokens = parse_json_field(
@@ -107,10 +116,30 @@ def fetch_all_data():
                 )
                 outcomes = parse_json_field(mkt.get("outcomes", []))
                 if tokens and len(tokens) >= 2 and outcomes and len(outcomes) >= 2:
-                    h2h_market = mkt
-                    break
+                    # Verify price history still exists
+                    test_hist = clob.fetch_price_history(str(tokens[0]))
+                    if len(test_hist) > 10:
+                        h2h_market = mkt
+                        h2h_event = ev
+                        break
         if h2h_market:
             break
+
+    # Fall back to active events if no resolved market has price history
+    if not h2h_market:
+        for ev in events:
+            for mkt in ev.get("markets", []):
+                if MarketFilter.is_head_to_head(mkt):
+                    tokens = parse_json_field(
+                        mkt.get("clobTokenIds") or mkt.get("tokens", [])
+                    )
+                    outcomes = parse_json_field(mkt.get("outcomes", []))
+                    if tokens and len(tokens) >= 2 and outcomes and len(outcomes) >= 2:
+                        h2h_market = mkt
+                        h2h_event = ev
+                        break
+            if h2h_market:
+                break
 
     # Extract both token IDs and their outcome labels
     token_a, token_b = "", ""
@@ -127,18 +156,51 @@ def fetch_all_data():
     print(f"  {label_a}: token {token_a[:20]}…")
     print(f"  {label_b}: token {token_b[:20]}…")
 
-    # 3. Price history for BOTH outcomes
+    # 3. Match game to ESPN for start/end times
+    espn = ESPNClient()
+    game_start: str | None = None
+    game_end: str | None = None
+    if h2h_event:
+        title = h2h_event.get("title", "")
+        end_date = h2h_event.get("endDate", "")[:10]
+        sport = detect_sport(title, tags=h2h_event.get("tags")).lower()
+        if sport == "unknown":
+            sport = "nba"  # default for this context
+        espn_event = load_or_fetch("espn_game_event", lambda: espn.find_game_event(
+            title, end_date, sport, search_days=3,
+        ))
+        if espn_event:
+            game_start = espn_event.get("date")
+            game_end = espn.estimate_game_end(espn_event, sport)
+            print(f"  ESPN match: {espn_event.get('name', '?')[:60]}")
+            print(f"  Game start: {game_start}")
+            print(f"  Game end (est.): {game_end}")
+        else:
+            print("  ESPN match: NOT FOUND")
+
+    # 4. Price history for BOTH outcomes
     price_history_a = load_or_fetch("price_history_a", lambda: clob.fetch_price_history(token_a)) if token_a else []
     price_history_b = load_or_fetch("price_history_b", lambda: clob.fetch_price_history(token_b)) if token_b else []
 
-    # 4. Order book for primary token
-    orderbook = load_or_fetch("orderbook", lambda: clob.fetch_orderbook(token_a)) if token_a else {"bids": [], "asks": []}
+    # 5. Order book for primary token (only meaningful for active markets)
+    # For resolved markets, fetch from an active one instead
+    active_token = ""
+    for ev in events:
+        for mkt in ev.get("markets", []):
+            if MarketFilter.is_head_to_head(mkt):
+                t = parse_json_field(mkt.get("clobTokenIds") or mkt.get("tokens", []))
+                if t:
+                    active_token = str(t[0]) if not isinstance(t[0], dict) else t[0].get("token_id", "")
+                    break
+        if active_token:
+            break
+    orderbook = load_or_fetch("orderbook", lambda: clob.fetch_orderbook(active_token)) if active_token else {"bids": [], "asks": []}
 
-    # 5. Trades (Data API)
+    # 6. Trades (Data API)
     condition_id = (h2h_market.get("conditionId") or h2h_market.get("condition_id")) if h2h_market else None
     trades = load_or_fetch("trades", lambda: data_api.fetch_trades(condition_id, max_offset=1000)) if condition_id else []
 
-    # 6. Find a soccer draw-market group
+    # 7. Find a soccer draw-market group
     draw_group = None
     draw_midpoints: dict[str, float] = {}
     for ev in events:
@@ -158,10 +220,13 @@ def fetch_all_data():
     return {
         "events": events,
         "h2h_market": h2h_market,
+        "h2h_event": h2h_event,
         "token_a": token_a, "token_b": token_b,
         "label_a": label_a, "label_b": label_b,
         "price_history_a": price_history_a,
         "price_history_b": price_history_b,
+        "game_start": game_start,
+        "game_end": game_end,
         "orderbook": orderbook,
         "trades": trades,
         "draw_group": draw_group,
@@ -198,6 +263,21 @@ def plot_sport_distribution(events: list[dict]):
     print("  ✓ sport_distribution.png")
 
 
+def _add_game_time_lines(ax, game_start: str | None, game_end: str | None):
+    """Add vertical lines for game start and estimated end time."""
+    for time_str, label, color, ls in [
+        (game_start, "Game Start", "#2E7D32", "-"),
+        (game_end, "Game End (est.)", "#C62828", "--"),
+    ]:
+        if not time_str:
+            continue
+        try:
+            dt = pd.to_datetime(time_str, utc=True)
+            ax.axvline(x=dt, color=color, linestyle=ls, linewidth=1.5, alpha=0.8, label=label)
+        except Exception:
+            pass
+
+
 def plot_price_history(data: dict):
     """Price line chart with BOTH outcomes labeled (price-data.md)."""
     df_a = _price_df(data["price_history_a"])
@@ -220,6 +300,7 @@ def plot_price_history(data: dict):
         ax.fill_between(df_b["timestamp"], df_b["price"], alpha=0.08, color="#FF7043")
 
     ax.axhline(y=0.5, color="gray", linestyle=":", alpha=0.4, label="50/50")
+    _add_game_time_lines(ax, data.get("game_start"), data.get("game_end"))
     short = title[:60] + "…" if len(title) > 60 else title
     ax.set_title(f"Price History — {short}")
     ax.set_ylabel("Price (implied probability)")
@@ -311,6 +392,7 @@ def plot_price_line(data: dict):
                 label=label_b, linestyle="--")
         ax.fill_between(df_b["timestamp"], df_b["price"], alpha=0.08, color="#FF7043")
     ax.axhline(y=0.5, color="gray", linestyle=":", alpha=0.4, label="50/50")
+    _add_game_time_lines(ax, data.get("game_start"), data.get("game_end"))
     ax.set_ylim(0, 1)
     ax.set_ylabel("Implied Probability")
     short = title[:60] + "…" if len(title) > 60 else title

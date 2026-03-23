@@ -119,9 +119,6 @@ class ESPNClient:
         _espn_cache[cache_key] = events
         return events
 
-        _espn_cache[cache_key] = events
-        return events
-
     # ------------------------------------------------------------------
     # Team matching helpers
     # ------------------------------------------------------------------
@@ -236,6 +233,92 @@ class ESPNClient:
                         return game_time
 
         return None
+
+    def find_game_event(
+        self,
+        title: str,
+        anchor_date: str,
+        sport: str,
+        *,
+        search_days: int = 3,
+    ) -> dict[str, Any] | None:
+        """Like :meth:`find_game_time` but returns the full ESPN event dict.
+
+        This is useful when you need more than just the start time — e.g.
+        period count, competition status, or team scores.
+
+        Returns
+        -------
+        dict | None
+            The full ESPN event dict, or None if no match found.
+        """
+        poly_teams = self.extract_poly_teams(title)
+        if not poly_teams:
+            return None
+
+        anchor = datetime.strptime(anchor_date, "%Y-%m-%d")
+
+        if sport == "soccer":
+            default_events = self.fetch_scoreboard(sport, None)
+            for event in default_events:
+                if self.teams_match(poly_teams, self.extract_teams(event)):
+                    return event
+
+        for delta in range(-search_days, search_days + 1):
+            check_date = anchor + timedelta(days=delta)
+            date_str = check_date.strftime("%Y%m%d")
+            events = self.fetch_scoreboard(sport, date_str)
+            for event in events:
+                if self.teams_match(poly_teams, self.extract_teams(event)):
+                    return event
+
+        return None
+
+    @staticmethod
+    def estimate_game_end(event: dict, sport: str = "nba") -> str | None:
+        """Estimate the game end time from an ESPN event dict.
+
+        Uses the event start time plus a sport-specific duration estimate,
+        adjusted for overtime periods when available.
+
+        Parameters
+        ----------
+        event : dict
+            ESPN event dict (from :meth:`find_game_event`).
+        sport : str
+            Sport key for duration estimation.
+
+        Returns
+        -------
+        str | None
+            Estimated end time as ISO datetime, or None.
+        """
+        start = event.get("date")
+        if not start:
+            return None
+
+        # Base durations (minutes) per sport
+        base_minutes: dict[str, int] = {
+            "nba": 150, "nfl": 210, "mlb": 180, "nhl": 150,
+            "soccer": 115, "mma": 60, "ncaam": 140, "ncaaf": 210,
+            "wnba": 130, "tennis": 120, "golf": 300, "f1": 120,
+        }
+        minutes = base_minutes.get(sport, 150)
+
+        # Check for overtime periods
+        for comp in event.get("competitions", []):
+            period = comp.get("status", {}).get("period", 0)
+            if sport == "nba" and period > 4:
+                minutes += (period - 4) * 10  # ~10 min per OT
+            elif sport == "nhl" and period > 3:
+                minutes += (period - 3) * 10
+
+        try:
+            start_dt = datetime.fromisoformat(start.replace("Z", "+00:00"))
+            end_dt = start_dt + timedelta(minutes=minutes)
+            return end_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        except (ValueError, TypeError):
+            return None
 
     # ------------------------------------------------------------------
     # DataFrame helper

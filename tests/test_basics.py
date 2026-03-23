@@ -422,3 +422,41 @@ def test_draw_group_non_binary_outcomes_skipped():
     grp = DrawMarketGroup(event)
     # Only 1 win market parsed (the non-binary one was skipped), so incomplete
     assert not grp.is_complete
+
+
+# --- ESPN estimate_game_end tests ---
+
+def test_estimate_game_end_nba():
+    event = {"date": "2026-03-23T01:00Z", "competitions": [{"status": {"period": 4}}]}
+    end = ESPNClient.estimate_game_end(event, "nba")
+    assert end == "2026-03-23T03:30:00Z"  # 2.5 hours
+
+
+def test_estimate_game_end_nba_overtime():
+    event = {"date": "2026-03-23T01:00Z", "competitions": [{"status": {"period": 5}}]}
+    end = ESPNClient.estimate_game_end(event, "nba")
+    assert end == "2026-03-23T03:40:00Z"  # 2.5h + 10 min OT
+
+
+def test_estimate_game_end_nfl():
+    event = {"date": "2026-09-10T17:00Z", "competitions": [{"status": {"period": 4}}]}
+    end = ESPNClient.estimate_game_end(event, "nfl")
+    assert end == "2026-09-10T20:30:00Z"  # 3.5 hours
+
+
+def test_estimate_game_end_soccer():
+    event = {"date": "2026-03-22T15:00Z", "competitions": [{"status": {"period": 2}}]}
+    end = ESPNClient.estimate_game_end(event, "soccer")
+    assert end == "2026-03-22T16:55:00Z"  # 1h 55m
+
+
+def test_estimate_game_end_no_date():
+    event = {"competitions": []}
+    end = ESPNClient.estimate_game_end(event, "nba")
+    assert end is None
+
+
+def test_estimate_game_end_unknown_sport():
+    event = {"date": "2026-03-23T01:00Z", "competitions": []}
+    end = ESPNClient.estimate_game_end(event, "curling")
+    assert end == "2026-03-23T03:30:00Z"  # default 150 min

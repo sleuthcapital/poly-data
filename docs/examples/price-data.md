@@ -121,23 +121,54 @@ print(df.head())
 ```
 
 !!! warning "Price history purged after resolution"
-    The CLOB `/prices-history` endpoint is **cleared after a market resolves**.
-    Use `DataAPIClient.fetch_trades()` for post-resolution trade data — it survives resolution.
+    The CLOB `/prices-history` endpoint is **cleared shortly after a market resolves**.
+    Recently resolved markets may still have data. For older markets,
+    use `DataAPIClient.fetch_trades()` — it survives resolution.
 
-## Plot: Price History (Both Outcomes)
+## Plot: Price History with Game Times
 
-Plot both sides of the market to see which team is favored over time:
+Plot both outcomes of a completed game with ESPN start/end time markers:
 
 ```python
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import pandas as pd
+from poly_data import GammaClient, ClobClient, ESPNClient, MarketFilter
+from poly_data.markets import parse_json_field, detect_sport
+from poly_data._http import GAMMA_API, get_json
 
-# Get both token IDs and outcome labels
-tokens = parse_json_field(market.get("clobTokenIds") or market.get("tokens", []))
-outcomes = parse_json_field(market.get("outcomes", []))
+gamma = GammaClient()
+clob = ClobClient()
+espn = ESPNClient()
 
+# Find a recently resolved H2H market
+resolved = get_json(f"{GAMMA_API}/events", params={
+    "tag_slug": "nba", "closed": "true", "limit": 50,
+    "order": "endDate", "ascending": "false",
+})
+
+for ev in resolved:
+    for market in ev.get("markets", []):
+        if not MarketFilter.is_head_to_head(market):
+            continue
+        tokens = parse_json_field(market.get("clobTokenIds") or market.get("tokens", []))
+        outcomes = parse_json_field(market.get("outcomes", []))
+        if len(tokens) >= 2 and len(outcomes) >= 2:
+            hist = clob.fetch_price_history(str(tokens[0]))
+            if len(hist) > 10:
+                break
+    else:
+        continue
+    break
+
+# Fetch price history for both outcomes
 df_a = clob.fetch_price_history_df(str(tokens[0]))
 df_b = clob.fetch_price_history_df(str(tokens[1]))
+
+# Get game times from ESPN
+title = ev["title"]
+end_date = ev.get("endDate", "")[:10]
+espn_event = espn.find_game_event(title, end_date, "nba", search_days=3)
 
 fig, ax = plt.subplots(figsize=(10, 4))
 ax.plot(df_a["timestamp"], df_a["price"], linewidth=1.5,
@@ -149,6 +180,17 @@ ax.plot(df_b["timestamp"], df_b["price"], linewidth=1.5,
 ax.fill_between(df_b["timestamp"], df_b["price"], alpha=0.08, color="#FF7043")
 
 ax.axhline(y=0.5, color="gray", linestyle=":", alpha=0.4, label="50/50")
+
+# Add game time markers from ESPN
+if espn_event:
+    start = pd.to_datetime(espn_event["date"], utc=True)
+    ax.axvline(x=start, color="#2E7D32", linewidth=1.5, alpha=0.8, label="Game Start")
+
+    end = espn.estimate_game_end(espn_event, "nba")
+    if end:
+        ax.axvline(x=pd.to_datetime(end, utc=True), color="#C62828",
+                   linestyle="--", linewidth=1.5, alpha=0.8, label="Game End (est.)")
+
 ax.set_ylabel("Price (implied probability)")
 ax.set_xlabel("Time")
 ax.set_title(f"Price History — {market['question']}")
@@ -156,13 +198,17 @@ ax.set_ylim(0, 1)
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d\n%H:%M"))
 ax.legend(loc="upper right")
 ax.grid(True, alpha=0.3)
-
 plt.tight_layout()
 plt.savefig("price_history.png", dpi=150)
 plt.show()
 ```
 
-![Price history chart with both outcomes](../assets/price_history.png){ loading=lazy }
+![Price history chart with game time markers](../assets/price_history.png){ loading=lazy }
+
+!!! tip "Game end is estimated"
+    ESPN doesn't provide explicit end times. `estimate_game_end()` uses
+    sport-specific durations (NBA ~2.5h, NFL ~3.5h, etc.) adjusted for
+    overtime periods when detected.
 
 ## Plot: Order Book Depth
 

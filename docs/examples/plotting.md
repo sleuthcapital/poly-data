@@ -1,40 +1,50 @@
 # Plotting & Visualization
 
-Build charts from live Polymarket data — price histories, order books, sport distributions, and draw-market probabilities.
+Build charts from Polymarket data — price histories with game time markers, order books, sport distributions, and draw-market probabilities.
 
-## Price History — Both Outcomes
+## Price History — Completed Game with ESPN Times
 
-Plot both sides of a head-to-head market with team labels:
+Plot both outcomes of a resolved game with vertical markers for game start and estimated end time from ESPN:
 
 ```python
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from poly_data import GammaClient, ClobClient, MarketFilter
-from poly_data.markets import parse_json_field
+import pandas as pd
+from poly_data import GammaClient, ClobClient, ESPNClient, MarketFilter
+from poly_data.markets import parse_json_field, detect_sport
+from poly_data._http import GAMMA_API, get_json
 
 gamma = GammaClient()
 clob = ClobClient()
+espn = ESPNClient()
 
-# Find an H2H market with both tokens
-events = gamma.fetch_events(active_only=True, sport_slugs=["nba"])
-h2h = None
-for ev in events:
-    for mkt in ev.get("markets", []):
-        if MarketFilter.is_head_to_head(mkt):
-            tokens = parse_json_field(mkt.get("clobTokenIds") or mkt.get("tokens", []))
-            outcomes = parse_json_field(mkt.get("outcomes", []))
-            if len(tokens) >= 2 and len(outcomes) >= 2:
-                h2h = mkt
+# Find a recently resolved H2H market with price history
+resolved = get_json(f"{GAMMA_API}/events", params={
+    "tag_slug": "nba", "closed": "true", "limit": 50,
+    "order": "endDate", "ascending": "false",
+})
+for ev in resolved:
+    for h2h in ev.get("markets", []):
+        if not MarketFilter.is_head_to_head(h2h):
+            continue
+        tokens = parse_json_field(h2h.get("clobTokenIds") or h2h.get("tokens", []))
+        outcomes = parse_json_field(h2h.get("outcomes", []))
+        if len(tokens) >= 2 and len(outcomes) >= 2:
+            hist = clob.fetch_price_history(str(tokens[0]))
+            if len(hist) > 10:
                 break
-    if h2h:
-        break
+    else:
+        continue
+    break
 
-# Fetch price history for BOTH outcomes
-tokens = parse_json_field(h2h.get("clobTokenIds") or h2h.get("tokens", []))
-outcomes = parse_json_field(h2h.get("outcomes", []))
-
+# Price histories for both sides
 df_a = clob.fetch_price_history_df(str(tokens[0]))
 df_b = clob.fetch_price_history_df(str(tokens[1]))
+
+# Match the game on ESPN
+espn_event = espn.find_game_event(
+    ev["title"], ev.get("endDate", "")[:10], "nba", search_days=3,
+)
 
 fig, ax = plt.subplots(figsize=(12, 5))
 ax.plot(df_a["timestamp"], df_a["price"], linewidth=1.5,
@@ -46,6 +56,17 @@ ax.plot(df_b["timestamp"], df_b["price"], linewidth=1.5,
 ax.fill_between(df_b["timestamp"], df_b["price"], alpha=0.08, color="#FF7043")
 
 ax.axhline(y=0.5, color="gray", linestyle=":", alpha=0.4, label="50/50")
+
+# Game time markers from ESPN
+if espn_event:
+    start = pd.to_datetime(espn_event["date"], utc=True)
+    ax.axvline(x=start, color="#2E7D32", linewidth=1.5, alpha=0.8, label="Game Start")
+
+    end = espn.estimate_game_end(espn_event, "nba")
+    if end:
+        ax.axvline(x=pd.to_datetime(end, utc=True), color="#C62828",
+                   linestyle="--", linewidth=1.5, alpha=0.8, label="Game End (est.)")
+
 ax.set_ylim(0, 1)
 ax.set_ylabel("Implied Probability")
 ax.set_title(h2h["question"])
@@ -56,11 +77,12 @@ plt.savefig("price_line.png", dpi=150)
 plt.show()
 ```
 
-![Price line chart with both outcomes labeled](../assets/price_line.png){ loading=lazy }
+![Price line chart with game time markers](../assets/price_line.png){ loading=lazy }
 
-!!! tip "Both tokens always sum to ~1"
-    For head-to-head markets, the two midpoints sum to approximately 1.0.
-    Plotting both lines makes the market sentiment shift obvious.
+!!! tip "Game end is estimated"
+    ESPN doesn't expose an explicit end time. `estimate_game_end()` uses
+    sport-specific durations (NBA ~2.5h, NFL ~3.5h) and adjusts for overtime
+    periods when the ESPN event shows period > regulation.
 
 ## Cumulative Depth Chart
 

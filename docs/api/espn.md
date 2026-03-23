@@ -95,6 +95,66 @@ print(time)  # "2026-03-23T23:10:00Z"
 
 ---
 
+### `find_game_event`
+
+```python
+def find_game_event(
+    self,
+    title: str,
+    anchor_date: str,
+    sport: str,
+    *,
+    search_days: int = 3,
+) -> dict | None
+```
+
+Like `find_game_time` but returns the **full ESPN event dict** instead of just the start time. Useful when you need period count, competition status, team scores, or other metadata.
+
+**Returns:** Full ESPN event dict, or `None` if no match.
+
+```python
+event = espn.find_game_event("Raptors vs. Suns", "2026-03-23", "nba")
+if event:
+    print(event["name"])    # "Toronto Raptors at Phoenix Suns"
+    print(event["date"])    # "2026-03-23T01:00Z"
+    # Competition status (period, clock, completed)
+    comp = event["competitions"][0]["status"]
+    print(comp["type"]["completed"])  # True
+    print(comp["period"])             # 4
+```
+
+---
+
+### `estimate_game_end` (static)
+
+```python
+@staticmethod
+def estimate_game_end(event: dict, sport: str = "nba") -> str | None
+```
+
+Estimate the game end time from an ESPN event dict. Uses sport-specific base durations, adjusted for overtime periods when available.
+
+| Sport | Base Duration |
+|-------|--------------|
+| NBA | 2h 30m |
+| NFL | 3h 30m |
+| MLB | 3h |
+| NHL | 2h 30m |
+| Soccer | 1h 55m |
+| MMA | 1h |
+
+```python
+event = espn.find_game_event("Raptors vs. Suns", "2026-03-23", "nba")
+end_time = espn.estimate_game_end(event, "nba")
+print(end_time)  # "2026-03-23T03:30:00Z"
+```
+
+!!! info "Overtime adjustment"
+    If the ESPN event shows `period > 4` (NBA) or `period > 3` (NHL),
+    approximately 10 minutes per overtime period is added to the estimate.
+
+---
+
 ### `extract_teams` (static)
 
 ```python
