@@ -31,6 +31,7 @@ dev = [
     "responses>=0.23",
     "python-dotenv>=1.0",
     "ruff",
+    "zensical",
 ]
 
 [project.urls]
