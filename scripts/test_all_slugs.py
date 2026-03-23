@@ -52,7 +52,7 @@ SLUG_ESPN_MAP: dict[str, str | None] = {
     "uel": "soccer",
     "sea": None,
     "bra": "soccer",
-    "bra2": "soccer",
+    "bra2": None,             # Serie B (Italian 2nd div mixed with Brazilian)
     "chi1": "soccer",
     "col1": "soccer",
     "mex": "soccer",
@@ -71,67 +71,48 @@ SLUG_ESPN_MAP: dict[str, str | None] = {
     "egy1": "soccer",
     "mar1": "soccer",
     "sud": "soccer",
-    "ssc": "soccer",
-    "cdr": "soccer",
-    "cde": "soccer",
-    "dfb": "soccer",
+    "ssc": "soccer",          # EFL Championship
+    "cdr": "soccer",          # Copa del Rey
+    "cde": "soccer",          # Copa del Rey (duplicate route)
+    "dfb": "soccer",          # DFB-Pokal
     "itc": "soccer",
     "acn": "soccer",
-    "afc-wc": "soccer",
+    "afc-wc": "soccer",       # World Cup Qualifiers
     "caf": "soccer",
     "concacaf": "soccer",
     "conmebol": "soccer",
-    "crint": "soccer",
+    "crint": None,             # International Cricket
     "cehl": None,
     "dehl": None,
     "fifa-friendlies": "soccer",
     "ja2": "soccer",
     "lib": "soccer",
-    "ucol": "soccer",
+    "ucol": "soccer",          # Ukraine Premier Liha
     "uef-qualifiers": "soccer",
-    "ruprem": None,
-    "rueuchamp": None,
-    "rusixnat": None,
-    "rusrp": None,
-    "rutopft": None,
-    "ruurc": None,
+    "ruprem": "soccer",        # Russian Premier League
+    "aus": "soccer",           # Australian A-League
+    # --- Rugby ---
+    "rusixnat": None,          # Rugby Six Nations
+    "rusrp": None,             # Rugby Premiership
+    "rutopft": None,           # Rugby Top 14
+    "ruurc": None,             # Rugby URC
+    # --- Basketball (international) ---
+    "rueuchamp": None,         # Euroleague Basketball
+    "bkarg": None,             # Liga Nacional de Básquetbol (Argentina)
+    "bkcba": None,             # Chinese Basketball Association
+    "bkcl": None,              # Basketball Champions League
+    "bkfr1": None,             # French Pro A
+    "bkkbl": None,             # Korean Basketball League
+    "bkligend": None,          # Liga Endesa (Spain)
+    "bknbl": None,             # NBL (Australia)
+    "bkseriea": None,          # Basketball Serie A (Italy)
     # --- Hockey ---
     "ahl": "nhl",
     "khl": None,
     "shl": None,
-    # --- Basketball (international) ---
-    "bkarg": None,
-    "bkcba": None,
-    "bkcl": None,
-    "bkfr1": None,
-    "bkkbl": None,
-    "bkligend": None,
-    "bknbl": None,
-    "bkseriea": None,
-    # --- Combat ---
-    "mwoh": "mma",
-    "wwoh": "mma",
-    "pll": None,
-    "wll": None,
-    "wbc": None,
-    # --- Tennis ---
-    "atp": "tennis",
-    "wta": "tennis",
-    "wtt-mens-singles": "tennis",
-    # --- Cricket ---
-    "cricbbl": "cricket",
-    "criccsat20w": "cricket",
-    "crichkt20w": "cricket",
-    "cricipl": "cricket",
-    "criclcl": "cricket",
-    "cricpakt20cup": "cricket",
-    "cricps": "cricket",
-    "cricpsl": "cricket",
-    "cricss": "cricket",
-    "crict20lpl": "cricket",
-    "cricthunderbolt": "cricket",
-    "cricwncl": "cricket",
     # --- Esports ---
+    "mwoh": None,              # Honor of Kings
+    "wwoh": None,              # Honor of Kings
     "counter-strike": None,
     "call-of-duty": None,
     "dota-2": None,
@@ -142,8 +123,30 @@ SLUG_ESPN_MAP: dict[str, str | None] = {
     "rocket-league": None,
     "starcraft-2": None,
     "valorant": None,
+    # --- Lacrosse ---
+    "pll": None,
+    "wll": None,
+    # --- Baseball ---
+    "wbc": None,
+    # --- Tennis ---
+    "atp": "tennis",
+    "wta": "tennis",
+    # --- Table Tennis ---
+    "wtt-mens-singles": None,  # World Table Tennis
+    # --- Cricket ---
+    "cricbbl": "cricket",      # Big Bash League
+    "criccsat20w": "cricket",  # CSA T20
+    "crichkt20w": "cricket",   # T20 (generic)
+    "cricipl": "cricket",      # Indian Premier League
+    "criclcl": "cricket",      # Legends Cricket League
+    "cricpakt20cup": "cricket",# National T20 Cup
+    "cricps": "cricket",       # Sheffield Shield
+    "cricpsl": "cricket",      # Pakistan Super League
+    "cricss": "cricket",       # NZ Cricket
+    "crict20lpl": "cricket",   # Lanka Premier League
+    "cricthunderbolt": "cricket",# Thunderbolt T10 League
+    "cricwncl": "cricket",     # Women's National Cricket League
     # --- Other ---
-    "aus": "soccer",
     "golf": "golf",
 }
 

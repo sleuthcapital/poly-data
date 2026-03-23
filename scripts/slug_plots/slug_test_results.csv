@@ -1,103 +1,50 @@
 slug,espn_key,events,game_found,market_type,game_title,num_outcomes,total_points,source,espn_match,plot,error
-nba,nba,30,True,h2h,Raptors vs. Suns,2,1895,clob,False,nba.png,
-nfl,nfl,30,False,,,0,0,,False,,no game with history
-mlb,mlb,30,True,h2h,Los Angeles Dodgers vs. Los Angeles Angels,2,1086,clob,False,mlb.png,
-nhl,nhl,30,True,h2h,Kings vs. Utah,2,7541,clob,False,nhl.png,
-cbb,ncaam,30,True,h2h,Florida vs. Houston,2,1745,trades,False,cbb.png,
-cwbb,wnba,30,True,h2h,Washington Huskies vs. TCU Horned Frogs (W),2,478,clob,False,cwbb.png,
-cfb,ncaaf,30,True,h2h,Miami vs. Indiana,2,3100,trades,False,cfb.png,
-epl,soccer,30,True,draw,Tottenham Hotspur FC vs. Nottingham Forest FC,3,5519,clob,False,epl.png,
-laliga,soccer,0,False,,,0,0,,False,,no resolved events
-bundesliga,soccer,30,True,draw,FC Augsburg vs. VfB Stuttgart,3,5594,clob,False,bundesliga.png,
-ligue-1,soccer,30,True,draw,FC Nantes vs. RC Strasbourg Alsace,3,5633,clob,False,ligue-1.png,
-mls,soccer,30,True,draw,San Diego FC vs. Real Salt Lake,3,11708,clob,False,mls.png,
-ucl,soccer,30,True,draw,Tottenham Hotspur FC vs. Club Atlético de Madrid,3,5698,clob,False,ucl.png,
-uel,soccer,30,True,draw,AS Roma vs. Bologna FC 1909,3,5577,clob,False,uel.png,
-sea,,30,True,draw,ACF Fiorentina vs. FC Internazionale Milano,3,5585,clob,False,sea.png,
-bra,soccer,0,False,,,0,0,,False,,no resolved events
-bra2,soccer,0,False,,,0,0,,False,,no resolved events
-chi1,soccer,0,False,,,0,0,,False,,no resolved events
-col1,soccer,0,False,,,0,0,,False,,no resolved events
-mex,soccer,30,True,draw,FC Juárez vs. Tigres de la UANL,3,11805,clob,False,mex.png,
-per1,soccer,0,False,,,0,0,,False,,no resolved events
-jap,soccer,0,False,,,0,0,,False,,no resolved events
-kor,soccer,0,False,,,0,0,,False,,no resolved events
-csl,soccer,0,False,,,0,0,,False,,no resolved events
-ere,soccer,30,True,draw,Telstar 1963 vs. PSV,3,11255,clob,False,ere.png,
-por,soccer,0,False,,,0,0,,False,,no resolved events
-tur,soccer,30,True,draw,Beşiktaş JK vs. Kasımpaşa SK,3,6944,clob,False,tur.png,
-nor,soccer,0,False,,,0,0,,False,,no resolved events
-den,soccer,0,False,,,0,0,,False,,no resolved events
-spl,soccer,0,False,,,0,0,,False,,no resolved events
-rou1,soccer,0,False,,,0,0,,False,,no resolved events
-cze1,soccer,0,False,,,0,0,,False,,no resolved events
-egy1,soccer,0,False,,,0,0,,False,,no resolved events
-mar1,soccer,0,False,,,0,0,,False,,no resolved events
-sud,soccer,30,True,draw,Orense SC vs. CSyD Macará,3,4651,clob,False,sud.png,
-ssc,soccer,0,False,,,0,0,,False,,no resolved events
-cdr,soccer,0,False,,,0,0,,False,,no resolved events
-cde,soccer,0,False,,,0,0,,False,,no resolved events
-dfb,soccer,0,False,,,0,0,,False,,no resolved events
-itc,soccer,22,True,draw,SS Lazio vs. Atalanta BC,3,4054,clob,False,itc.png,
-acn,soccer,2,False,,,0,0,,False,,no game with history
-afc-wc,soccer,0,False,,,0,0,,False,,no resolved events
-caf,soccer,30,True,draw,Nigeria vs. DR Congo,3,535,trades,False,caf.png,
-concacaf,soccer,30,True,draw,Guatemala vs. Suriname,3,369,trades,False,concacaf.png,
-conmebol,soccer,21,True,draw,Peru vs. Paraguay,3,80,trades,False,conmebol.png,
-crint,soccer,0,False,,,0,0,,False,,no resolved events
-cehl,,30,True,h2h,ELH: Sparta Prague vs. Plzen,2,1809,clob,False,cehl.png,
-dehl,,30,True,h2h,DEL: Grizzlys Wolfsburg vs. Schwenninger Wild Wings,2,340,clob,False,dehl.png,
-fifa-friendlies,soccer,0,False,,,0,0,,False,,no resolved events
-ja2,soccer,0,False,,,0,0,,False,,no resolved events
-lib,soccer,30,True,draw,Independiente Medellín vs. CA Juventud,3,5378,clob,False,lib.png,
-ucol,soccer,0,False,,,0,0,,False,,no resolved events
-uef-qualifiers,soccer,30,True,draw,Belarus vs. Greece,3,794,trades,False,uef-qualifiers.png,
-ruprem,,0,False,,,0,0,,False,,no resolved events
-rueuchamp,,0,False,,,0,0,,False,,no resolved events
-rusixnat,,0,False,,,0,0,,False,,no resolved events
-rusrp,,0,False,,,0,0,,False,,no resolved events
-rutopft,,0,False,,,0,0,,False,,no resolved events
-ruurc,,0,False,,,0,0,,False,,no resolved events
-ahl,nhl,30,True,h2h,AHL: Calgary Wranglers vs. San Diego Gulls,2,1033,clob,False,ahl.png,
-khl,,30,True,h2h,KHL: Spartak Moscow vs. Neftekhimik Nizhnekamsk,2,1776,clob,False,khl.png,
-shl,,30,True,h2h,SHL: Leksands IF vs. HV 71,2,1811,clob,False,shl.png,
-bkarg,,0,False,,,0,0,,False,,no resolved events
-bkcba,,0,False,,,0,0,,False,,no resolved events
-bkcl,,0,False,,,0,0,,False,,no resolved events
-bkfr1,,0,False,,,0,0,,False,,no resolved events
-bkkbl,,0,False,,,0,0,,False,,no resolved events
-bkligend,,0,False,,,0,0,,False,,no resolved events
-bknbl,,0,False,,,0,0,,False,,no resolved events
-bkseriea,,0,False,,,0,0,,False,,no resolved events
-mwoh,mma,0,False,,,0,0,,False,,no resolved events
-wwoh,mma,0,False,,,0,0,,False,,no resolved events
-pll,,7,True,h2h,New York Atlas vs. California Redwoods,2,2146,clob,False,pll.png,
-wll,,5,True,h2h,Boston Guard vs. Maryland Charm,2,2295,clob,False,wll.png,
-wbc,,30,True,h2h,Final Stage: USA vs. Venezuela,2,196,clob,False,wbc.png,
-atp,tennis,13,True,h2h,Miami Open: Fritz vs. Berrettini,2,48,trades,False,atp.png,
-wta,tennis,3,False,,,0,0,,False,,no game with history
-wtt-mens-singles,tennis,0,False,,,0,0,,False,,no resolved events
-cricbbl,cricket,0,False,,,0,0,,False,,no resolved events
-criccsat20w,cricket,0,False,,,0,0,,False,,no resolved events
-crichkt20w,cricket,0,False,,,0,0,,False,,no resolved events
-cricipl,cricket,0,False,,,0,0,,False,,no resolved events
-criclcl,cricket,0,False,,,0,0,,False,,no resolved events
-cricpakt20cup,cricket,0,False,,,0,0,,False,,no resolved events
-cricps,cricket,0,False,,,0,0,,False,,no resolved events
+laliga,soccer,30,True,draw,Real Madrid CF vs. Club Atlético de Madrid,3,5850,clob,False,laliga.png,
+bra,soccer,30,True,draw,SC Corinthians Paulista vs. CR Flamengo,3,11602,clob,False,bra.png,
+bra2,,30,True,draw,Virtus Entella vs. AC Reggiana 1919,3,5816,clob,False,bra2.png,
+jap,soccer,30,True,draw,Urawa Red Diamonds vs. FC Machida Zelvia,3,9220,clob,False,jap.png,
+ja2,soccer,30,True,draw,Reilac Shiga vs. Sagan Tosu,3,9104,clob,False,ja2.png,
+kor,soccer,30,True,draw,FC Anyang vs. Incheon United FC,3,11370,clob,False,kor.png,
+csl,soccer,30,True,draw,Yunnan Yukun FC vs. Shandong Taishan FC,3,6383,clob,False,csl.png,
+por,soccer,30,True,draw,SC Braga vs. FC Porto,3,8213,clob,False,por.png,
+nor,soccer,30,True,draw,Sandefjord Fotball vs. Sarpsborg 08 FF,3,11482,clob,False,nor.png,
+den,soccer,30,True,draw,Viborg FF vs. FC Midtjylland,3,6492,clob,False,den.png,
+spl,soccer,30,True,draw,Dundee United FC vs. Celtic FC,3,5669,clob,False,spl.png,
+ssc,soccer,30,True,draw,Swansea City AFC vs. Coventry City FC,3,11341,clob,False,ssc.png,
+bkcba,,30,True,h2h,Jiangsu Dragons vs. Zhejiang Lions,2,686,clob,False,bkcba.png,
+bkcl,,30,True,h2h,Alba Berlin vs. AEK,2,1906,clob,False,bkcl.png,
+bkfr1,,30,True,h2h,Paris Basketball vs. Bourg-en-Bresse,2,765,clob,False,bkfr1.png,
+bkkbl,,30,True,h2h,Wonju DB Promy vs. Daegu Pegasus,2,895,clob,False,bkkbl.png,
+bkligend,,30,True,h2h,Barcelona vs. Real Madrid,2,1887,clob,False,bkligend.png,
+bknbl,,30,True,h2h,Sydney Kings vs. Adelaide 36ers,2,892,clob,False,bknbl.png,
+bkseriea,,30,True,h2h,Pallacanestro Reggiana vs. Virtus Bologna,2,1882,clob,False,bkseriea.png,
+cricthunderbolt,cricket,30,True,h2h,Thunderbolt T10 League: Chennai Warlords vs Rajasthan Emperors,2,495,clob,False,cricthunderbolt.png,
+cricwncl,cricket,30,True,h2h,"National Cricket League, Women: New South Wales Breakers vs Queensland Fire - Mo",2,1628,clob,False,cricwncl.png,
+criclcl,cricket,16,True,draw,Legends Cricket League: Royal Riders Punjab vs Southern Super Stars - Team Top B,3,2161,clob,False,criclcl.png,
+cricpakt20cup,cricket,30,True,draw,National T20 Cup: Abbottabad Region vs Lahore Region Whites - Toss Match Double,3,233,clob,False,cricpakt20cup.png,
+aus,soccer,30,True,draw,Perth Glory FC vs. Melbourne City FC,3,11506,clob,False,aus.png,
+ruprem,soccer,30,True,draw,FK Lokomotiv Moskva vs. FK Akron Tolyatti,3,11725,clob,False,ruprem.png,
+mwoh,,30,True,h2h,Honor of Kings: SYGaming vs LT Gaming (BO5) - KPL Growth League Group Stage,2,279,clob,False,mwoh.png,
+wwoh,,30,True,h2h,Honor of Kings: SYGaming vs LT Gaming (BO5) - KPL Growth League Group Stage,2,279,clob,False,wwoh.png,
+wtt-mens-singles,,30,True,h2h,WTT - Men's Singles: Felix Lebrun vs Ruibo Wen,2,62,clob,False,wtt-mens-singles.png,
+bkarg,,30,True,h2h,Gimnasia vs. Platense,2,842,clob,False,bkarg.png,
+afc-wc,soccer,1,False,,,0,0,,False,,no game with history
+ucol,soccer,30,True,draw,FK Karpaty Lviv vs. FK Obolon Kyiv,3,6635,clob,False,ucol.png,
+crint,,30,True,h2h,"T20 Nigeria Invitational Tournament, Women: Nigeria vs Ghana",2,548,clob,False,crint.png,
+cdr,soccer,30,True,draw,Real Sociedad de Fútbol vs. Athletic Club,3,4030,clob,False,cdr.png,
+cde,soccer,30,True,draw,Real Sociedad de Fútbol vs. Athletic Club,3,4030,clob,False,cde.png,
 cricpsl,cricket,0,False,,,0,0,,False,,no resolved events
-cricss,cricket,0,False,,,0,0,,False,,no resolved events
-crict20lpl,cricket,0,False,,,0,0,,False,,no resolved events
-cricthunderbolt,cricket,0,False,,,0,0,,False,,no resolved events
-cricwncl,cricket,0,False,,,0,0,,False,,no resolved events
-counter-strike,,30,True,h2h,CS: ENCE vs fnatic,2,78,trades,False,counter-strike.png,
-call-of-duty,,30,True,h2h,Call of Duty: Toronto KOI vs OpTic Texas (BO5) - Call of Duty League Stage 2 Maj,2,1940,clob,False,call-of-duty.png,
-dota-2,,30,True,h2h,Dota 2: Xtreme Gaming vs Team Falcons (BO2) - ESL One Birmingham Group B,2,906,clob,False,dota-2.png,
-league-of-legends,,30,True,h2h,LoL: G2 Esports vs Bilibili Gaming (BO5) - First Stand Playoffs,2,79,clob,False,league-of-legends.png,
-mobile-legends-bang-bang,,30,True,h2h,Mobile Legends Bang Bang: ONIC PH vs Team Falcons PH (BO3) - MPL Philippines Reg,2,2041,clob,False,mobile-legends-bang-bang.png,
-overwatch,,30,True,h2h,Overwatch: LuneX Gaming vs Extinction (BO3) - OCS North America Stage 1 Group St,2,171,clob,False,overwatch.png,
-rainbow-six-siege,,30,True,h2h,Rainbow Six Siege:  InControl vs LATAM LAST HOPE (BO3) - North America League Ch,2,220,clob,False,rainbow-six-siege.png,
-rocket-league,,30,True,h2h,Rocket League: Vitality vs NRG Esports (BO7) - RLCS Major Boston Playoffs,2,39,trades,False,rocket-league.png,
-starcraft-2,,30,True,h2h,StarCraft II: Rogue vs trigger (BO5) - RSL Revival Playoffs,2,1943,clob,False,starcraft-2.png,
-valorant,,30,True,h2h,Valorant: Leviatán Academy vs OXEN (BO3) - VCL Latin America South Playoffs,2,114,clob,False,valorant.png,
-aus,soccer,1,False,,,0,0,,False,,no game with history
-golf,golf,30,False,,,0,0,,False,,no game with history
+rueuchamp,,1,False,,,0,0,,False,,no game with history
+criccsat20w,cricket,30,True,h2h,"CSA T20 Division 1, Women: Western Province vs Lions",2,1190,clob,False,criccsat20w.png,
+cricbbl,cricket,3,False,,,0,0,,False,,no game with history
+cricipl,cricket,30,True,h2h,Punjab Kings vs. Royal Challengers Bangalore,2,1249,trades,False,cricipl.png,
+crict20lpl,cricket,20,True,h2h,Lanka Premier League: Kandy Falcons vs Colombo Strikers (Game 1),2,274,trades,False,crict20lpl.png,
+dfb,soccer,30,True,draw,FC Bayern München vs. RB Leipzig,3,1438,trades,False,dfb.png,
+cricps,cricket,14,True,draw,Sheffield Shield: Queensland Bulls vs Western Australia - Team Top Batter,3,1962,clob,False,cricps.png,
+cricss,cricket,3,False,,,0,0,,False,,no game with history
+rusixnat,,15,True,draw,Six Nations: France vs England,3,8377,clob,False,rusixnat.png,
+rusrp,,10,True,draw,Premiership Rugby: Leicester Tigers vs Bristol Bears,3,11550,clob,False,rusrp.png,
+rutopft,,30,True,draw,Top 14: Union Bordeaux Begles vs Toulouse,3,11504,clob,False,rutopft.png,
+ruurc,,30,True,draw,United Rugby Championship: Stormers vs Dragons,3,11383,clob,False,ruurc.png,
+crichkt20w,cricket,3,False,,,0,0,,False,,no game with history
+fifa-friendlies,soccer,2,True,draw,Soccer: USA vs. Switzerland,3,72,trades,False,fifa-friendlies.png,

@@ -33,6 +33,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from poly_data import GammaClient, ClobClient, DataAPIClient, ESPNClient, MarketFilter
 from poly_data._http import GAMMA_API, get_json
+from poly_data.gamma import TAG_SLUG_MAP, resolve_tag_slug
 from poly_data.markets import detect_sport, parse_json_field
 from poly_data.espn import ESPN_SPORT_PATHS
 
@@ -41,11 +42,16 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def fetch_resolved_events(slug: str, limit: int = 30) -> list[dict]:
-    """Fetch recent resolved events for a given Polymarket slug."""
+    """Fetch recent resolved events for a given Polymarket slug.
+
+    Automatically remaps frontend URL slugs to the real Gamma API
+    ``tag_slug`` values when they differ.
+    """
+    real_tag = resolve_tag_slug(slug)
     data = get_json(
         f"{GAMMA_API}/events",
         params={
-            "tag_slug": slug,
+            "tag_slug": real_tag,
             "closed": "true",
             "limit": limit,
             "order": "endDate",

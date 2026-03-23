@@ -12,7 +12,7 @@ from poly_data._http import GAMMA_API, get_json
 logger = logging.getLogger(__name__)
 
 # Default sport slugs used for queries.
-# Covers all 42 slugs with confirmed resolved game data on Polymarket.
+# Covers all 85 slugs with confirmed resolved game data on Polymarket.
 DEFAULT_SPORT_SLUGS = [
     # --- US traditional ---
     "nba", "nfl", "mlb", "nhl",
@@ -20,25 +20,102 @@ DEFAULT_SPORT_SLUGS = [
     "cbb", "cwbb", "cfb",
     # --- Soccer ---
     "epl", "laliga", "bundesliga", "ligue-1", "mls", "ucl", "uel", "sea",
-    "mex", "ere", "tur", "sud", "itc", "lib",
+    "bra", "bra2", "jap", "ja2", "kor", "csl", "mex", "ere", "por", "tur",
+    "nor", "den", "spl", "ssc", "aus", "ruprem", "ucol",
+    "sud", "itc", "lib", "cdr", "cde", "dfb",
     "caf", "concacaf", "conmebol", "uef-qualifiers",
+    "afc-wc", "fifa-friendlies",
     # --- Hockey ---
     "cehl", "dehl", "ahl", "khl", "shl",
-    # --- Combat ---
-    "mwoh", "wwoh", "wbc",
+    # --- Basketball (international) ---
+    "bkcba", "bkcl", "bkfr1", "bkkbl", "bkligend", "bknbl", "bkseriea", "bkarg",
+    "rueuchamp",
+    # --- Rugby ---
+    "rusixnat", "rusrp", "rutopft", "ruurc",
     # --- Lacrosse ---
     "pll", "wll",
+    # --- Combat / Baseball ---
+    "wbc",
     # --- Individual ---
     "atp", "wta", "golf",
+    # --- Table Tennis ---
+    "wtt-mens-singles",
     # --- Esports ---
     "counter-strike", "call-of-duty", "dota-2", "league-of-legends",
     "mobile-legends-bang-bang", "overwatch", "rainbow-six-siege",
     "rocket-league", "starcraft-2", "valorant",
-    # --- Tennis (table) ---
-    "wtt-mens-singles",
+    "mwoh", "wwoh",
     # --- Cricket ---
-    "cricipl", "cricpsl", "cricss",
+    "cricipl", "cricpsl", "cricbbl", "criccsat20w", "cricps", "cricss",
+    "cricthunderbolt", "cricwncl", "criclcl", "cricpakt20cup",
+    "crict20lpl", "crichkt20w", "crint",
 ]
+
+# Mapping from frontend URL slugs to actual Gamma API tag_slug values.
+# Polymarket's website routes use short slugs that differ from the event
+# tag_slug stored in the Gamma API.  This mapping bridges the gap.
+TAG_SLUG_MAP: dict[str, str] = {
+    # Soccer
+    "laliga": "la-liga",
+    "bra": "brazil-serie-a",
+    "bra2": "serie-b",
+    "jap": "japan-j-league",
+    "ja2": "japan-j2-league",
+    "kor": "k-league",
+    "csl": "chinese-super-league",
+    "por": "primeira-liga",
+    "nor": "norway-eliteserien",
+    "den": "denmark-superliga",
+    "spl": "scottish-premiership",
+    "ssc": "efl-championship",
+    "aus": "australian-a-league",
+    "cdr": "copa-del-rey",
+    "cde": "copa-del-rey",
+    "dfb": "dfb-pokal",
+    "ruprem": "rus",
+    "ucol": "ukraine-premier-liha",
+    "afc-wc": "world-cup-qualifiers",
+    "fifa-friendlies": "fifa",
+    # Basketball (international)
+    "bkcba": "cba",
+    "bkcl": "basketball-champions-league",
+    "bkfr1": "pro-a",
+    "bkkbl": "kbl",
+    "bkligend": "liga-endesa",
+    "bknbl": "nbl",
+    "bkseriea": "basketball-series-a",
+    "bkarg": "lnb",
+    "rueuchamp": "euroleague",
+    # Cricket
+    "cricthunderbolt": "thunderbolt-t10-league",
+    "cricwncl": "womens-national-cricket-league",
+    "criclcl": "legends-league-cricket",
+    "cricpakt20cup": "national-t20-cup",
+    "cricipl": "ipl",
+    "cricpsl": "pakistan-super-league",
+    "cricbbl": "big-bash-league",
+    "criccsat20w": "csa-t20",
+    "cricps": "sheffield-shield",
+    "cricss": "cricket-new-zealand",
+    "crict20lpl": "lanka-premier-league",
+    "crichkt20w": "t20",
+    "crint": "international-cricket",
+    # Esports
+    "mwoh": "honor-of-kings",
+    "wwoh": "honor-of-kings",
+    # Table Tennis
+    "wtt-mens-singles": "wttms",
+    # Rugby
+    "rusixnat": "rugby-six-nations",
+    "rusrp": "rugby-premiership",
+    "rutopft": "rugby-top-14",
+    "ruurc": "united-rugby-championship",
+}
+
+
+def resolve_tag_slug(slug: str) -> str:
+    """Convert a frontend URL slug to the real Gamma API ``tag_slug``."""
+    return TAG_SLUG_MAP.get(slug, slug)
 
 
 class GammaClient:
@@ -92,7 +169,7 @@ class GammaClient:
 
         for slug in slugs:
             params: dict[str, Any] = {
-                "tag_slug": slug,
+                "tag_slug": resolve_tag_slug(slug),
                 "limit": limit,
             }
             if active_only:
@@ -150,7 +227,7 @@ class GammaClient:
 
         for slug in slugs:
             params: dict[str, Any] = {
-                "tag_slug": slug,
+                "tag_slug": resolve_tag_slug(slug),
                 "closed": "true",
                 "start_date_min": start_date,
                 "end_date_max": end_date,
