@@ -1,20 +1,8 @@
 {
-  "updated_at": "2026-03-23T14:51:16.969113+00:00",
-  "total_slugs": 102,
-  "active_slugs": 87,
+  "updated_at": "2026-03-23T17:30:46.804173+00:00",
+  "total_slugs": 93,
+  "active_slugs": 90,
   "slugs": {
-    "acn": {
-      "api_tag": "acn",
-      "sport": "soccer",
-      "market_type": null,
-      "status": "no_history",
-      "espn_sport": "soccer",
-      "earliest_date": "2025-12-18",
-      "latest_date": "2026-03-19",
-      "event_count": 2,
-      "sample_title": "Will Accenture (ACN) beat quarterly earnings?",
-      "updated_at": "2026-03-23T14:51:16.264360+00:00"
-    },
     "afc-wc": {
       "api_tag": "world-cup-qualifiers",
       "sport": "soccer",
@@ -25,7 +13,7 @@
       "latest_date": "2025-03-21",
       "event_count": 1,
       "sample_title": "FIFA World Cup Qualifiers: Ecuador vs. Venezuela",
-      "updated_at": "2026-03-23T14:50:31.727565+00:00"
+      "updated_at": "2026-03-23T17:30:11.494379+00:00"
     },
     "ahl": {
       "api_tag": "ahl",
@@ -35,21 +23,9 @@
       "espn_sport": "nhl",
       "earliest_date": "2025-11-26",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "AHL: Calgary Wranglers vs. San Diego Gulls",
-      "updated_at": "2026-03-23T14:50:35.043310+00:00"
-    },
-    "atp": {
-      "api_tag": "atp",
-      "sport": "tennis",
-      "market_type": null,
-      "status": "no_history",
-      "espn_sport": "tennis",
-      "earliest_date": "2024-11-17",
-      "latest_date": "2026-03-16",
-      "event_count": 13,
-      "sample_title": "2026 Men’s BNP Paribas Open Winner",
-      "updated_at": "2026-03-23T14:50:49.040477+00:00"
+      "updated_at": "2026-03-23T17:30:13.361477+00:00"
     },
     "aus": {
       "api_tag": "australian-a-league",
@@ -59,9 +35,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-24",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Perth Glory FC vs. Melbourne City FC",
-      "updated_at": "2026-03-23T14:50:22.405635+00:00"
+      "updated_at": "2026-03-23T17:30:05.452974+00:00"
     },
     "bkarg": {
       "api_tag": "lnb",
@@ -71,9 +47,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-17",
       "latest_date": "2026-03-30",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Gimnasia vs. Platense",
-      "updated_at": "2026-03-23T14:50:42.352255+00:00"
+      "updated_at": "2026-03-23T17:30:20.643439+00:00"
     },
     "bkcba": {
       "api_tag": "cba",
@@ -82,10 +58,10 @@
       "status": "active",
       "espn_sport": null,
       "earliest_date": "2026-01-16",
-      "latest_date": "2026-03-29",
-      "event_count": 30,
-      "sample_title": "Jiangsu Dragons vs. Zhejiang Lions",
-      "updated_at": "2026-03-23T14:50:37.319260+00:00"
+      "latest_date": "2026-03-30",
+      "event_count": 100,
+      "sample_title": "Shanghai Sharks vs. Guangdong Southern Tigers",
+      "updated_at": "2026-03-23T17:30:14.992674+00:00"
     },
     "bkcl": {
       "api_tag": "basketball-champions-league",
@@ -95,9 +71,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-16",
       "latest_date": "2026-03-25",
-      "event_count": 30,
+      "event_count": 52,
       "sample_title": "Alba Berlin vs. AEK",
-      "updated_at": "2026-03-23T14:50:38.015798+00:00"
+      "updated_at": "2026-03-23T17:30:15.491983+00:00"
     },
     "bkfr1": {
       "api_tag": "pro-a",
@@ -107,9 +83,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-17",
       "latest_date": "2026-03-29",
-      "event_count": 30,
+      "event_count": 74,
       "sample_title": "Paris Basketball vs. Bourg-en-Bresse",
-      "updated_at": "2026-03-23T14:50:38.954859+00:00"
+      "updated_at": "2026-03-23T17:30:15.982772+00:00"
     },
     "bkkbl": {
       "api_tag": "kbl",
@@ -118,10 +94,10 @@
       "status": "active",
       "espn_sport": null,
       "earliest_date": "2026-01-16",
-      "latest_date": "2026-03-29",
-      "event_count": 30,
-      "sample_title": "Wonju DB Promy vs. Daegu Pegasus",
-      "updated_at": "2026-03-23T14:50:39.659550+00:00"
+      "latest_date": "2026-03-30",
+      "event_count": 96,
+      "sample_title": "Seoul Thunders vs. Mobis Phoebus",
+      "updated_at": "2026-03-23T17:30:16.509859+00:00"
     },
     "bkligend": {
       "api_tag": "liga-endesa",
@@ -131,9 +107,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-17",
       "latest_date": "2026-03-29",
-      "event_count": 30,
+      "event_count": 77,
       "sample_title": "Barcelona vs. Real Madrid",
-      "updated_at": "2026-03-23T14:50:40.366484+00:00"
+      "updated_at": "2026-03-23T17:30:17.064234+00:00"
     },
     "bknbl": {
       "api_tag": "nbl",
@@ -143,9 +119,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-16",
       "latest_date": "2026-03-28",
-      "event_count": 30,
+      "event_count": 58,
       "sample_title": "Sydney Kings vs. Adelaide 36ers",
-      "updated_at": "2026-03-23T14:50:41.071995+00:00"
+      "updated_at": "2026-03-23T17:30:19.668213+00:00"
     },
     "bkseriea": {
       "api_tag": "basketball-series-a",
@@ -155,9 +131,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-17",
       "latest_date": "2026-03-29",
-      "event_count": 30,
+      "event_count": 62,
       "sample_title": "Pallacanestro Reggiana vs. Virtus Bologna",
-      "updated_at": "2026-03-23T14:50:41.815743+00:00"
+      "updated_at": "2026-03-23T17:30:20.171046+00:00"
     },
     "bra": {
       "api_tag": "brazil-serie-a",
@@ -167,9 +143,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-08",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "SC Corinthians Paulista vs. CR Flamengo",
-      "updated_at": "2026-03-23T14:50:12.328719+00:00"
+      "event_count": 100,
+      "sample_title": "SC Corinthians Paulista vs. CR Flamengo - More Markets",
+      "updated_at": "2026-03-23T17:29:57.886636+00:00"
     },
     "bra2": {
       "api_tag": "serie-b",
@@ -179,9 +155,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-21",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Virtus Entella vs. AC Reggiana 1919",
-      "updated_at": "2026-03-23T14:50:13.042443+00:00"
+      "updated_at": "2026-03-23T17:29:58.367474+00:00"
     },
     "bundesliga": {
       "api_tag": "bundesliga",
@@ -191,9 +167,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2024-09-28",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "FC Augsburg vs. VfB Stuttgart - Total Corners",
-      "updated_at": "2026-03-23T14:50:07.082578+00:00"
+      "updated_at": "2026-03-23T17:29:54.375181+00:00"
     },
     "caf": {
       "api_tag": "caf",
@@ -203,9 +179,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-03",
       "latest_date": "2025-11-16",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Nigeria vs. DR Congo",
-      "updated_at": "2026-03-23T14:50:28.804975+00:00"
+      "updated_at": "2026-03-23T17:30:09.961111+00:00"
     },
     "call-of-duty": {
       "api_tag": "call-of-duty",
@@ -215,9 +191,9 @@
       "espn_sport": null,
       "earliest_date": "2025-12-06",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Call of Duty: Toronto KOI vs OpTic Texas (BO5) - Call of Duty League Stage 2 Major Qualifiers Qualif",
-      "updated_at": "2026-03-23T14:50:53.031409+00:00"
+      "updated_at": "2026-03-23T17:30:27.568902+00:00"
     },
     "cbb": {
       "api_tag": "cbb",
@@ -227,9 +203,9 @@
       "espn_sport": "ncaam",
       "earliest_date": "2025-02-08",
       "latest_date": "2026-03-15",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Which teams will be a #1 seed in NCAA Tournament?",
-      "updated_at": "2026-03-23T14:50:03.271213+00:00"
+      "updated_at": "2026-03-23T17:29:51.368604+00:00"
     },
     "cde": {
       "api_tag": "copa-del-rey",
@@ -239,9 +215,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-02-05",
       "latest_date": "2026-03-04",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Real Sociedad de Fútbol vs. Athletic Club",
-      "updated_at": "2026-03-23T14:50:27.630594+00:00"
+      "updated_at": "2026-03-23T17:30:09.018058+00:00"
     },
     "cdr": {
       "api_tag": "copa-del-rey",
@@ -251,9 +227,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-02-05",
       "latest_date": "2026-03-04",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Real Sociedad de Fútbol vs. Athletic Club",
-      "updated_at": "2026-03-23T14:50:26.925063+00:00"
+      "updated_at": "2026-03-23T17:30:08.517758+00:00"
     },
     "cehl": {
       "api_tag": "cehl",
@@ -263,9 +239,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-26",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "ELH: Sparta Prague vs. Plzen",
-      "updated_at": "2026-03-23T14:50:33.201673+00:00"
+      "updated_at": "2026-03-23T17:30:12.373575+00:00"
     },
     "cfb": {
       "api_tag": "cfb",
@@ -275,33 +251,9 @@
       "espn_sport": "ncaaf",
       "earliest_date": "2024-08-24",
       "latest_date": "2026-12-30",
-      "event_count": 30,
-      "sample_title": "Davey O'Brien Award Winner",
-      "updated_at": "2026-03-23T14:50:04.907823+00:00"
-    },
-    "chi1": {
-      "api_tag": "chi1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:11.475830+00:00"
-    },
-    "col1": {
-      "api_tag": "col1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:12.125775+00:00"
+      "event_count": 100,
+      "sample_title": "Doak Walker Award Winner",
+      "updated_at": "2026-03-23T17:29:52.543686+00:00"
     },
     "concacaf": {
       "api_tag": "concacaf",
@@ -311,9 +263,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2024-11-18",
       "latest_date": "2025-11-19",
-      "event_count": 30,
+      "event_count": 40,
       "sample_title": "Guatemala vs. Suriname",
-      "updated_at": "2026-03-23T14:50:29.512671+00:00"
+      "updated_at": "2026-03-23T17:29:59.018708+00:00"
     },
     "conmebol": {
       "api_tag": "conmebol",
@@ -325,7 +277,7 @@
       "latest_date": "2025-09-09",
       "event_count": 21,
       "sample_title": "Peru vs. Paraguay",
-      "updated_at": "2026-03-23T14:50:30.171710+00:00"
+      "updated_at": "2026-03-23T17:29:59.604801+00:00"
     },
     "counter-strike": {
       "api_tag": "counter-strike",
@@ -335,9 +287,9 @@
       "espn_sport": null,
       "earliest_date": "2024-09-20",
       "latest_date": "2026-12-31",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Will Valve to add first CS2 operation by January 31, 2026?",
-      "updated_at": "2026-03-23T14:50:52.327046+00:00"
+      "updated_at": "2026-03-23T17:30:23.409004+00:00"
     },
     "cricbbl": {
       "api_tag": "big-bash-league",
@@ -349,7 +301,7 @@
       "latest_date": "2025-12-13",
       "event_count": 3,
       "sample_title": "Big Bash League: Sydney Sixers vs Adelaide Strikers (Game 1)",
-      "updated_at": "2026-03-23T14:51:03.429595+00:00"
+      "updated_at": "2026-03-23T17:30:37.659899+00:00"
     },
     "criccsat20w": {
       "api_tag": "csa-t20",
@@ -359,9 +311,9 @@
       "espn_sport": "cricket",
       "earliest_date": "2025-11-13",
       "latest_date": "2026-03-20",
-      "event_count": 30,
+      "event_count": 59,
       "sample_title": "CSA T20 Division 1, Women: Western Province vs Lions",
-      "updated_at": "2026-03-23T14:51:04.137824+00:00"
+      "updated_at": "2026-03-23T17:30:38.462004+00:00"
     },
     "crichkt20w": {
       "api_tag": "t20",
@@ -373,7 +325,7 @@
       "latest_date": "2026-03-08",
       "event_count": 3,
       "sample_title": "2026 ICC T20 Men’s World Cup: 2nd Place",
-      "updated_at": "2026-03-23T14:51:09.860730+00:00"
+      "updated_at": "2026-03-23T17:30:45.114171+00:00"
     },
     "cricipl": {
       "api_tag": "ipl",
@@ -383,9 +335,9 @@
       "espn_sport": "cricket",
       "earliest_date": "2025-03-23",
       "latest_date": "2025-06-04",
-      "event_count": 30,
+      "event_count": 90,
       "sample_title": "IPL Finals: Will the Punjab Kings score 200+ runs?",
-      "updated_at": "2026-03-23T14:51:02.098846+00:00"
+      "updated_at": "2026-03-23T17:30:36.115525+00:00"
     },
     "criclcl": {
       "api_tag": "legends-league-cricket",
@@ -397,7 +349,7 @@
       "latest_date": "2026-03-24",
       "event_count": 16,
       "sample_title": "Legends Cricket League: Royal Riders Punjab vs Southern Super Stars - Team Top Batter",
-      "updated_at": "2026-03-23T14:51:07.540489+00:00"
+      "updated_at": "2026-03-23T17:30:42.999891+00:00"
     },
     "cricpakt20cup": {
       "api_tag": "national-t20-cup",
@@ -407,9 +359,9 @@
       "espn_sport": "cricket",
       "earliest_date": "2026-03-20",
       "latest_date": "2026-03-24",
-      "event_count": 30,
+      "event_count": 36,
       "sample_title": "National T20 Cup: Abbottabad Region vs Lahore Region Whites - Toss Match Double",
-      "updated_at": "2026-03-23T14:51:08.315505+00:00"
+      "updated_at": "2026-03-23T17:30:43.704385+00:00"
     },
     "cricps": {
       "api_tag": "sheffield-shield",
@@ -421,7 +373,7 @@
       "latest_date": "2026-03-11",
       "event_count": 14,
       "sample_title": "Sheffield Shield: Queensland Bulls vs Western Australia - Team Top Batter",
-      "updated_at": "2026-03-23T14:51:04.840937+00:00"
+      "updated_at": "2026-03-23T17:30:39.219462+00:00"
     },
     "cricpsl": {
       "api_tag": "pakistan-super-league",
@@ -433,7 +385,7 @@
       "latest_date": null,
       "event_count": 0,
       "sample_title": null,
-      "updated_at": "2026-03-23T14:51:02.725992+00:00"
+      "updated_at": "2026-03-23T17:30:36.870356+00:00"
     },
     "cricss": {
       "api_tag": "cricket-new-zealand",
@@ -445,7 +397,7 @@
       "latest_date": "2025-12-19",
       "event_count": 3,
       "sample_title": "Plunket Shield: Northern Brave vs Wellington Firebirds (Game 1)",
-      "updated_at": "2026-03-23T14:51:05.544701+00:00"
+      "updated_at": "2026-03-23T17:30:40.045456+00:00"
     },
     "crict20lpl": {
       "api_tag": "lanka-premier-league",
@@ -457,19 +409,19 @@
       "latest_date": "2025-12-19",
       "event_count": 20,
       "sample_title": "Lanka Premier League: Colombo Strikers vs Dambulla Sixers (Game 1)",
-      "updated_at": "2026-03-23T14:51:09.099523+00:00"
+      "updated_at": "2026-03-23T17:30:44.410969+00:00"
     },
     "cricthunderbolt": {
       "api_tag": "thunderbolt-t10-league",
       "sport": "cricket",
-      "market_type": "h2h",
+      "market_type": "draw",
       "status": "active",
       "espn_sport": "cricket",
       "earliest_date": "2026-03-20",
       "latest_date": "2026-03-26",
-      "event_count": 30,
-      "sample_title": "Thunderbolt T10 League: Chennai Warlords vs Rajasthan Emperors",
-      "updated_at": "2026-03-23T14:51:06.284464+00:00"
+      "event_count": 76,
+      "sample_title": "Thunderbolt T10 League: Chennai Warlords vs Rajasthan Emperors - Team Top Batter",
+      "updated_at": "2026-03-23T17:30:40.824629+00:00"
     },
     "cricwncl": {
       "api_tag": "womens-national-cricket-league",
@@ -479,21 +431,21 @@
       "espn_sport": "cricket",
       "earliest_date": "2026-01-26",
       "latest_date": "2026-03-27",
-      "event_count": 30,
+      "event_count": 60,
       "sample_title": "National Cricket League, Women: New South Wales Breakers vs Queensland Fire - More Markets",
-      "updated_at": "2026-03-23T14:51:06.812243+00:00"
+      "updated_at": "2026-03-23T17:30:42.298564+00:00"
     },
     "crint": {
       "api_tag": "international-cricket",
       "sport": "cricket",
-      "market_type": "h2h",
+      "market_type": "draw",
       "status": "active",
       "espn_sport": "cricket",
       "earliest_date": "2025-12-21",
       "latest_date": "2026-03-29",
-      "event_count": 30,
-      "sample_title": "T20 Nigeria Invitational Tournament, Women: Nigeria vs Ghana",
-      "updated_at": "2026-03-23T14:51:10.674681+00:00"
+      "event_count": 100,
+      "sample_title": "T20 Nigeria Invitational Tournament, Women: Nigeria vs Ghana - Toss Match Double",
+      "updated_at": "2026-03-23T17:30:45.824756+00:00"
     },
     "csl": {
       "api_tag": "chinese-super-league",
@@ -503,9 +455,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-24",
       "latest_date": "2026-03-21",
-      "event_count": 30,
+      "event_count": 58,
       "sample_title": "Yunnan Yukun FC vs. Shandong Taishan FC",
-      "updated_at": "2026-03-23T14:50:16.097747+00:00"
+      "updated_at": "2026-03-23T17:29:42.444365+00:00"
     },
     "cwbb": {
       "api_tag": "cwbb",
@@ -515,21 +467,9 @@
       "espn_sport": "wnba",
       "earliest_date": "2025-11-03",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Washington Huskies vs. TCU Horned Frogs (W)",
-      "updated_at": "2026-03-23T14:50:04.206242+00:00"
-    },
-    "cze1": {
-      "api_tag": "cze1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:14.150862+00:00"
+      "updated_at": "2026-03-23T17:29:28.167863+00:00"
     },
     "dehl": {
       "api_tag": "dehl",
@@ -539,9 +479,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-26",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "DEL: Grizzlys Wolfsburg vs. Schwenninger Wild Wings",
-      "updated_at": "2026-03-23T14:50:34.226510+00:00"
+      "updated_at": "2026-03-23T17:30:03.784445+00:00"
     },
     "den": {
       "api_tag": "denmark-superliga",
@@ -551,9 +491,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-17",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Viborg FF vs. FC Midtjylland",
-      "updated_at": "2026-03-23T14:50:20.181085+00:00"
+      "updated_at": "2026-03-23T17:29:47.635967+00:00"
     },
     "dfb": {
       "api_tag": "dfb-pokal",
@@ -563,9 +503,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-05-24",
       "latest_date": "2026-02-11",
-      "event_count": 30,
+      "event_count": 33,
       "sample_title": "FC Bayern München vs. RB Leipzig - More Markets",
-      "updated_at": "2026-03-23T14:50:28.132219+00:00"
+      "updated_at": "2026-03-23T17:29:57.377904+00:00"
     },
     "dota-2": {
       "api_tag": "dota-2",
@@ -575,21 +515,9 @@
       "espn_sport": null,
       "earliest_date": "2025-07-10",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Dota 2: Xtreme Gaming vs Team Falcons (BO2) - ESL One Birmingham Group B",
-      "updated_at": "2026-03-23T14:50:53.737291+00:00"
-    },
-    "egy1": {
-      "api_tag": "egy1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:14.852448+00:00"
+      "updated_at": "2026-03-23T17:30:25.443477+00:00"
     },
     "epl": {
       "api_tag": "epl",
@@ -599,9 +527,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2023-12-12",
       "latest_date": "2026-12-31",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Next Chelsea Manager",
-      "updated_at": "2026-03-23T14:50:05.647696+00:00"
+      "updated_at": "2026-03-23T17:29:30.052924+00:00"
     },
     "ere": {
       "api_tag": "ere",
@@ -611,9 +539,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-13",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Telstar 1963 vs. PSV",
-      "updated_at": "2026-03-23T14:50:17.501068+00:00"
+      "updated_at": "2026-03-23T17:29:44.090376+00:00"
     },
     "fifa-friendlies": {
       "api_tag": "fifa",
@@ -625,19 +553,19 @@
       "latest_date": "2025-06-11",
       "event_count": 2,
       "sample_title": "Soccer: USA vs. Switzerland",
-      "updated_at": "2026-03-23T14:50:32.473374+00:00"
+      "updated_at": "2026-03-23T17:30:01.943001+00:00"
     },
     "golf": {
       "api_tag": "golf",
       "sport": "golf",
-      "market_type": null,
-      "status": "no_history",
+      "market_type": "h2h",
+      "status": "active",
       "espn_sport": "golf",
       "earliest_date": "2024-05-19",
       "latest_date": "2026-06-30",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "2025 PGA Tour Player of the Year",
-      "updated_at": "2026-03-23T14:50:50.448439+00:00"
+      "updated_at": "2026-03-23T17:30:20.389903+00:00"
     },
     "itc": {
       "api_tag": "itc",
@@ -649,7 +577,7 @@
       "latest_date": "2026-03-04",
       "event_count": 22,
       "sample_title": "SS Lazio vs. Atalanta BC - More Markets",
-      "updated_at": "2026-03-23T14:50:25.518067+00:00"
+      "updated_at": "2026-03-23T17:29:54.510214+00:00"
     },
     "ja2": {
       "api_tag": "japan-j2-league",
@@ -659,9 +587,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-25",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "Reilac Shiga vs. Sagan Tosu - More Markets",
-      "updated_at": "2026-03-23T14:50:14.447811+00:00"
+      "event_count": 100,
+      "sample_title": "Reilac Shiga vs. Sagan Tosu",
+      "updated_at": "2026-03-23T17:29:40.469775+00:00"
     },
     "jap": {
       "api_tag": "japan-j-league",
@@ -671,9 +599,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-25",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "Urawa Red Diamonds vs. FC Machida Zelvia",
-      "updated_at": "2026-03-23T14:50:13.744948+00:00"
+      "event_count": 100,
+      "sample_title": "Kashiwa Reysol vs. FC Mito Holly Hock - More Markets",
+      "updated_at": "2026-03-23T17:29:39.735720+00:00"
     },
     "khl": {
       "api_tag": "khl",
@@ -683,9 +611,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-26",
       "latest_date": "2026-03-20",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "KHL: Spartak Moscow vs. Neftekhimik Nizhnekamsk",
-      "updated_at": "2026-03-23T14:50:35.772863+00:00"
+      "updated_at": "2026-03-23T17:30:05.409429+00:00"
     },
     "kor": {
       "api_tag": "k-league",
@@ -695,9 +623,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-25",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "FC Anyang vs. Incheon United FC",
-      "updated_at": "2026-03-23T14:50:15.152787+00:00"
+      "event_count": 86,
+      "sample_title": "Pohang Steelers FC vs. Bucheon FC 1995 - More Markets",
+      "updated_at": "2026-03-23T17:29:41.501928+00:00"
     },
     "laliga": {
       "api_tag": "la-liga",
@@ -707,9 +635,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2024-05-31",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "Real Madrid CF vs. Club Atlético de Madrid - Player Props",
-      "updated_at": "2026-03-23T14:50:06.293316+00:00"
+      "event_count": 100,
+      "sample_title": "Real Madrid CF vs. Club Atlético de Madrid - More Markets",
+      "updated_at": "2026-03-23T17:29:31.177599+00:00"
     },
     "league-of-legends": {
       "api_tag": "league-of-legends",
@@ -719,9 +647,9 @@
       "espn_sport": null,
       "earliest_date": "2023-11-19",
       "latest_date": "2026-12-31",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Will Gen.G complete the League of Legends “Golden Road” in 2026?",
-      "updated_at": "2026-03-23T14:50:54.665660+00:00"
+      "updated_at": "2026-03-23T17:30:27.250932+00:00"
     },
     "lib": {
       "api_tag": "lib",
@@ -731,9 +659,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-16",
       "latest_date": "2026-03-13",
-      "event_count": 30,
+      "event_count": 65,
       "sample_title": "Independiente Medellín vs. CA Juventud",
-      "updated_at": "2026-03-23T14:50:26.224441+00:00"
+      "updated_at": "2026-03-23T17:29:55.214188+00:00"
     },
     "ligue-1": {
       "api_tag": "ligue-1",
@@ -743,21 +671,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-04-23",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "FC Nantes vs. RC Strasbourg Alsace",
-      "updated_at": "2026-03-23T14:50:07.825885+00:00"
-    },
-    "mar1": {
-      "api_tag": "mar1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:15.558307+00:00"
+      "event_count": 100,
+      "sample_title": "FC Nantes vs. RC Strasbourg Alsace - Exact Score",
+      "updated_at": "2026-03-23T17:29:33.051482+00:00"
     },
     "mex": {
       "api_tag": "mex",
@@ -767,9 +683,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-02",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "FC Juárez vs. Tigres de la UANL",
-      "updated_at": "2026-03-23T14:50:16.795701+00:00"
+      "updated_at": "2026-03-23T17:29:43.147258+00:00"
     },
     "mlb": {
       "api_tag": "mlb",
@@ -779,9 +695,9 @@
       "espn_sport": "mlb",
       "earliest_date": "2024-09-26",
       "latest_date": "2026-03-30",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Los Angeles Dodgers vs. Los Angeles Angels",
-      "updated_at": "2026-03-23T14:50:01.615049+00:00"
+      "updated_at": "2026-03-23T17:29:25.375091+00:00"
     },
     "mls": {
       "api_tag": "mls",
@@ -791,9 +707,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2024-12-07",
       "latest_date": "2026-12-31",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Will Lionel Messi announce his retirement in 2026?",
-      "updated_at": "2026-03-23T14:50:08.632546+00:00"
+      "updated_at": "2026-03-23T17:29:33.993361+00:00"
     },
     "mobile-legends-bang-bang": {
       "api_tag": "mobile-legends-bang-bang",
@@ -803,9 +719,9 @@
       "espn_sport": null,
       "earliest_date": "2025-10-24",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Mobile Legends Bang Bang: ONIC PH vs Team Falcons PH (BO3) - MPL Philippines Regular Season",
-      "updated_at": "2026-03-23T14:50:55.866655+00:00"
+      "updated_at": "2026-03-23T17:30:29.182875+00:00"
     },
     "mwoh": {
       "api_tag": "honor-of-kings",
@@ -815,9 +731,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-20",
       "latest_date": "2026-03-23",
-      "event_count": 30,
-      "sample_title": "Honor of Kings: XQG Esports Club vs Mighty Tiger Gaming (BO5) - KPL Growth League Group Stage",
-      "updated_at": "2026-03-23T14:51:00.848009+00:00"
+      "event_count": 100,
+      "sample_title": "Honor of Kings: WST vs JLY (BO5) - KPL Growth League Group Stage",
+      "updated_at": "2026-03-23T17:30:34.630947+00:00"
     },
     "nba": {
       "api_tag": "nba",
@@ -827,21 +743,21 @@
       "espn_sport": "nba",
       "earliest_date": "2023-12-26",
       "latest_date": "2026-06-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Will Jayson Tatum play a game this season?",
-      "updated_at": "2026-03-23T14:49:59.604502+00:00"
+      "updated_at": "2026-03-23T17:29:22.391151+00:00"
     },
     "nfl": {
       "api_tag": "nfl",
       "sport": "football",
-      "market_type": null,
-      "status": "no_history",
+      "market_type": "h2h",
+      "status": "active",
       "espn_sport": "nfl",
       "earliest_date": "2023-11-19",
       "latest_date": "2026-09-10",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Tua Tagovailoa traded by next season?",
-      "updated_at": "2026-03-23T14:50:00.668577+00:00"
+      "updated_at": "2026-03-23T17:29:24.085621+00:00"
     },
     "nhl": {
       "api_tag": "nhl",
@@ -851,9 +767,9 @@
       "espn_sport": "nhl",
       "earliest_date": "2024-02-09",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Kings vs. Utah",
-      "updated_at": "2026-03-23T14:50:02.315175+00:00"
+      "updated_at": "2026-03-23T17:29:26.322371+00:00"
     },
     "nor": {
       "api_tag": "norway-eliteserien",
@@ -863,9 +779,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-18",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "Sandefjord Fotball vs. Sarpsborg 08 FF",
-      "updated_at": "2026-03-23T14:50:19.426010+00:00"
+      "event_count": 100,
+      "sample_title": "SK Brann vs. Tromsø IL",
+      "updated_at": "2026-03-23T17:29:46.901056+00:00"
     },
     "overwatch": {
       "api_tag": "overwatch",
@@ -875,21 +791,9 @@
       "espn_sport": null,
       "earliest_date": "2025-10-24",
       "latest_date": "2026-03-23",
-      "event_count": 30,
-      "sample_title": "Overwatch: Please Not Hero Ban vs Lazuli (BO3) - OCS Japan Stage 1 Regular Season",
-      "updated_at": "2026-03-23T14:50:56.657405+00:00"
-    },
-    "per1": {
-      "api_tag": "per1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:12.739220+00:00"
+      "event_count": 66,
+      "sample_title": "Overwatch: VARREL vs ENTER FORCE.36 (BO3) - OCS Japan Stage 1 Regular Season",
+      "updated_at": "2026-03-23T17:30:30.130897+00:00"
     },
     "pll": {
       "api_tag": "pll",
@@ -901,7 +805,7 @@
       "latest_date": "2026-03-07",
       "event_count": 7,
       "sample_title": "New York Atlas vs. California Redwoods",
-      "updated_at": "2026-03-23T14:50:46.960031+00:00"
+      "updated_at": "2026-03-23T17:30:17.027901+00:00"
     },
     "por": {
       "api_tag": "primeira-liga",
@@ -911,9 +815,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-02-07",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "SC Braga vs. FC Porto - More Markets",
-      "updated_at": "2026-03-23T14:50:18.119618+00:00"
+      "event_count": 100,
+      "sample_title": "SC Braga vs. FC Porto",
+      "updated_at": "2026-03-23T17:29:45.026680+00:00"
     },
     "rainbow-six-siege": {
       "api_tag": "rainbow-six-siege",
@@ -923,9 +827,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-29",
       "latest_date": "2026-03-16",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Rainbow Six Siege:  InControl vs LATAM LAST HOPE (BO3) - North America League Challenger Series Play",
-      "updated_at": "2026-03-23T14:50:57.383858+00:00"
+      "updated_at": "2026-03-23T17:30:30.834365+00:00"
     },
     "rocket-league": {
       "api_tag": "rocket-league",
@@ -935,21 +839,9 @@
       "espn_sport": null,
       "earliest_date": "2025-12-15",
       "latest_date": "2026-02-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Rocket League: Vitality vs NRG Esports (BO7) - RLCS Major Boston Playoffs",
-      "updated_at": "2026-03-23T14:50:58.077776+00:00"
-    },
-    "rou1": {
-      "api_tag": "rou1",
-      "sport": "unknown",
-      "market_type": null,
-      "status": "no_events",
-      "espn_sport": null,
-      "earliest_date": null,
-      "latest_date": null,
-      "event_count": 0,
-      "sample_title": null,
-      "updated_at": "2026-03-23T14:51:13.446399+00:00"
+      "updated_at": "2026-03-23T17:30:31.777712+00:00"
     },
     "rueuchamp": {
       "api_tag": "euroleague",
@@ -961,7 +853,7 @@
       "latest_date": "2025-05-25",
       "event_count": 1,
       "sample_title": "2025 Euroleague Basketball Champion",
-      "updated_at": "2026-03-23T14:50:43.157618+00:00"
+      "updated_at": "2026-03-23T17:30:13.097521+00:00"
     },
     "ruprem": {
       "api_tag": "rus",
@@ -971,9 +863,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-26",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "FK Lokomotiv Moskva vs. FK Akron Tolyatti",
-      "updated_at": "2026-03-23T14:50:23.222729+00:00"
+      "updated_at": "2026-03-23T17:29:52.251355+00:00"
     },
     "rusixnat": {
       "api_tag": "rugby-six-nations",
@@ -985,7 +877,7 @@
       "latest_date": "2026-03-21",
       "event_count": 15,
       "sample_title": "Six Nations: France vs England",
-      "updated_at": "2026-03-23T14:50:43.841116+00:00"
+      "updated_at": "2026-03-23T17:30:13.879912+00:00"
     },
     "rusrp": {
       "api_tag": "rugby-premiership",
@@ -997,7 +889,7 @@
       "latest_date": "2026-03-29",
       "event_count": 10,
       "sample_title": "Premiership Rugby: Leicester Tigers vs Bristol Bears",
-      "updated_at": "2026-03-23T14:50:44.651936+00:00"
+      "updated_at": "2026-03-23T17:30:14.697018+00:00"
     },
     "rutopft": {
       "api_tag": "rugby-top-14",
@@ -1007,9 +899,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-31",
       "latest_date": "2026-03-29",
-      "event_count": 30,
+      "event_count": 34,
       "sample_title": "Top 14: Union Bordeaux Begles vs Toulouse",
-      "updated_at": "2026-03-23T14:50:45.387926+00:00"
+      "updated_at": "2026-03-23T17:30:15.446478+00:00"
     },
     "ruurc": {
       "api_tag": "united-rugby-championship",
@@ -1019,9 +911,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-30",
       "latest_date": "2026-03-29",
-      "event_count": 30,
+      "event_count": 36,
       "sample_title": "United Rugby Championship: Stormers vs Dragons",
-      "updated_at": "2026-03-23T14:50:46.145346+00:00"
+      "updated_at": "2026-03-23T17:30:16.259941+00:00"
     },
     "sea": {
       "api_tag": "sea",
@@ -1031,9 +923,9 @@
       "espn_sport": null,
       "earliest_date": "2025-04-30",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "ACF Fiorentina vs. FC Internazionale Milano - Exact Score",
-      "updated_at": "2026-03-23T14:50:11.472752+00:00"
+      "event_count": 100,
+      "sample_title": "ACF Fiorentina vs. FC Internazionale Milano - Halftime Result",
+      "updated_at": "2026-03-23T17:29:37.046709+00:00"
     },
     "shl": {
       "api_tag": "shl",
@@ -1043,9 +935,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-27",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "SHL: Leksands IF vs. HV 71",
-      "updated_at": "2026-03-23T14:50:36.598262+00:00"
+      "updated_at": "2026-03-23T17:30:06.123673+00:00"
     },
     "spl": {
       "api_tag": "scottish-premiership",
@@ -1055,9 +947,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-11-22",
       "latest_date": "2026-03-22",
-      "event_count": 30,
-      "sample_title": "Dundee United FC vs. Celtic FC - More Markets",
-      "updated_at": "2026-03-23T14:50:20.902528+00:00"
+      "event_count": 100,
+      "sample_title": "Dundee United FC vs. Celtic FC",
+      "updated_at": "2026-03-23T17:29:48.530900+00:00"
     },
     "ssc": {
       "api_tag": "efl-championship",
@@ -1067,9 +959,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-10-17",
       "latest_date": "2026-03-21",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Swansea City AFC vs. Coventry City FC",
-      "updated_at": "2026-03-23T14:50:21.655209+00:00"
+      "updated_at": "2026-03-23T17:29:49.536644+00:00"
     },
     "starcraft-2": {
       "api_tag": "starcraft-2",
@@ -1079,9 +971,9 @@
       "espn_sport": null,
       "earliest_date": "2026-01-07",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "StarCraft II: Rogue vs trigger (BO5) - RSL Revival Playoffs",
-      "updated_at": "2026-03-23T14:50:59.187835+00:00"
+      "updated_at": "2026-03-23T17:30:32.715690+00:00"
     },
     "sud": {
       "api_tag": "sud",
@@ -1091,9 +983,21 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-17",
       "latest_date": "2026-03-06",
-      "event_count": 30,
+      "event_count": 45,
       "sample_title": "Orense SC vs. CSyD Macará",
-      "updated_at": "2026-03-23T14:50:24.810182+00:00"
+      "updated_at": "2026-03-23T17:29:53.805902+00:00"
+    },
+    "tennis": {
+      "api_tag": "tennis",
+      "sport": "tennis",
+      "market_type": "h2h",
+      "status": "active",
+      "espn_sport": "tennis",
+      "earliest_date": "2024-01-28",
+      "latest_date": "2026-03-30",
+      "event_count": 100,
+      "sample_title": "Dubrovnik: Mayar Sherif vs Anouk Koevermans",
+      "updated_at": "2026-03-23T17:30:19.434503+00:00"
     },
     "tur": {
       "api_tag": "tur",
@@ -1103,9 +1007,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-13",
       "latest_date": "2026-03-19",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Beşiktaş JK vs. Kasımpaşa SK - More Markets",
-      "updated_at": "2026-03-23T14:50:18.675735+00:00"
+      "updated_at": "2026-03-23T17:29:45.969795+00:00"
     },
     "ucl": {
       "api_tag": "ucl",
@@ -1115,9 +1019,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2024-10-22",
       "latest_date": "2026-04-16",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "UEFA Champions League: Team to reach quarter-finals",
-      "updated_at": "2026-03-23T14:50:09.632673+00:00"
+      "updated_at": "2026-03-23T17:29:34.885208+00:00"
     },
     "ucol": {
       "api_tag": "ukraine-premier-liha",
@@ -1127,9 +1031,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2026-02-27",
       "latest_date": "2026-03-22",
-      "event_count": 30,
+      "event_count": 47,
       "sample_title": "FK Karpaty Lviv vs. FK Obolon Kyiv",
-      "updated_at": "2026-03-23T14:50:24.060751+00:00"
+      "updated_at": "2026-03-23T17:29:53.037028+00:00"
     },
     "uef-qualifiers": {
       "api_tag": "uef-qualifiers",
@@ -1139,9 +1043,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-09-04",
       "latest_date": "2025-11-18",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Belarus vs. Greece",
-      "updated_at": "2026-03-23T14:50:30.929327+00:00"
+      "updated_at": "2026-03-23T17:30:00.341185+00:00"
     },
     "uel": {
       "api_tag": "uel",
@@ -1151,9 +1055,9 @@
       "espn_sport": "soccer",
       "earliest_date": "2025-02-20",
       "latest_date": "2026-04-17",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "UEFA Europa League: Team to reach quarter-finals",
-      "updated_at": "2026-03-23T14:50:10.388886+00:00"
+      "updated_at": "2026-03-23T17:29:36.025988+00:00"
     },
     "valorant": {
       "api_tag": "valorant",
@@ -1163,9 +1067,9 @@
       "espn_sport": null,
       "earliest_date": "2025-02-08",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 100,
       "sample_title": "Valorant: Leviatán Academy vs OXEN (BO3) - VCL Latin America South Playoffs",
-      "updated_at": "2026-03-23T14:50:59.997959+00:00"
+      "updated_at": "2026-03-23T17:30:33.654046+00:00"
     },
     "wbc": {
       "api_tag": "wbc",
@@ -1175,9 +1079,9 @@
       "espn_sport": null,
       "earliest_date": "2026-02-12",
       "latest_date": "2026-03-25",
-      "event_count": 30,
+      "event_count": 59,
       "sample_title": "Final Stage: USA vs. Venezuela",
-      "updated_at": "2026-03-23T14:50:48.417386+00:00"
+      "updated_at": "2026-03-23T17:30:18.498106+00:00"
     },
     "wll": {
       "api_tag": "wll",
@@ -1189,19 +1093,7 @@
       "latest_date": "2026-03-06",
       "event_count": 5,
       "sample_title": "Boston Guard vs. Maryland Charm",
-      "updated_at": "2026-03-23T14:50:47.761445+00:00"
-    },
-    "wta": {
-      "api_tag": "wta",
-      "sport": "tennis",
-      "market_type": null,
-      "status": "no_history",
-      "espn_sport": "tennis",
-      "earliest_date": "2025-05-20",
-      "latest_date": "2026-03-16",
-      "event_count": 3,
-      "sample_title": "2026 Women’s BNP Paribas Open Winner",
-      "updated_at": "2026-03-23T14:50:49.745303+00:00"
+      "updated_at": "2026-03-23T17:30:17.781300+00:00"
     },
     "wtt-mens-singles": {
       "api_tag": "wttms",
@@ -1211,9 +1103,9 @@
       "espn_sport": null,
       "earliest_date": "2026-02-22",
       "latest_date": "2026-03-23",
-      "event_count": 30,
+      "event_count": 95,
       "sample_title": "WTT - Men's Singles: Felix Lebrun vs Ruibo Wen",
-      "updated_at": "2026-03-23T14:50:51.638827+00:00"
+      "updated_at": "2026-03-23T17:30:22.775493+00:00"
     },
     "wwoh": {
       "api_tag": "honor-of-kings",
@@ -1223,9 +1115,9 @@
       "espn_sport": null,
       "earliest_date": "2025-11-20",
       "latest_date": "2026-03-23",
-      "event_count": 30,
-      "sample_title": "Honor of Kings: XQG Esports Club vs Mighty Tiger Gaming (BO5) - KPL Growth League Group Stage",
-      "updated_at": "2026-03-23T14:51:01.549647+00:00"
+      "event_count": 100,
+      "sample_title": "Honor of Kings: WST vs JLY (BO5) - KPL Growth League Group Stage",
+      "updated_at": "2026-03-23T17:30:35.434443+00:00"
     }
   }
 }

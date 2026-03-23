@@ -37,7 +37,7 @@ DEFAULT_SPORT_SLUGS = [
     # --- Combat / Baseball ---
     "wbc",
     # --- Individual ---
-    "atp", "wta", "golf",
+    "tennis", "golf",
     # --- Table Tennis ---
     "wtt-mens-singles",
     # --- Esports ---
@@ -103,6 +103,9 @@ TAG_SLUG_MAP: dict[str, str] = {
     # Esports
     "mwoh": "honor-of-kings",
     "wwoh": "honor-of-kings",
+    # Tennis
+    "atp": "tennis",
+    "wta": "tennis",
     # Table Tennis
     "wtt-mens-singles": "wttms",
     # Rugby

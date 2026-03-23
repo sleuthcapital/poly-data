@@ -65,7 +65,7 @@ SLUG_SPORT: dict[str, str] = {
     # Baseball (international)
     "wbc": "baseball",
     # Tennis
-    "atp": "tennis", "wta": "tennis",
+    "atp": "tennis", "wta": "tennis", "tennis": "tennis",
     # Table Tennis
     "wtt-mens-singles": "table-tennis",
     # Golf
@@ -98,7 +98,7 @@ SLUG_ESPN: dict[str, str | None] = {
     "caf": "soccer", "concacaf": "soccer", "conmebol": "soccer",
     "uef-qualifiers": "soccer", "afc-wc": "soccer", "fifa-friendlies": "soccer",
     "ja2": "soccer", "acn": "soccer", "csl": "soccer",
-    "ahl": "nhl", "atp": "tennis", "wta": "tennis", "golf": "golf",
+    "ahl": "nhl", "atp": "tennis", "wta": "tennis", "tennis": "tennis", "golf": "golf",
     "cricbbl": "cricket", "criccsat20w": "cricket", "cricipl": "cricket",
     "criclcl": "cricket", "cricpakt20cup": "cricket", "cricps": "cricket",
     "cricpsl": "cricket", "cricss": "cricket", "cricthunderbolt": "cricket",
@@ -144,18 +144,22 @@ def _fetch_active_count(tag: str) -> int:
 
 
 def _detect_market_type(events: list[dict]) -> str | None:
-    """Detect whether a slug uses H2H or 3-way draw markets."""
-    for ev in events[:10]:
+    """Detect whether a slug uses H2H or 3-way draw markets.
+
+    Scans *all* events (not just the first few) because game-level events
+    can be buried among prop bets, especially during off-seasons (e.g. NFL).
+    """
+    for ev in events:
         markets = ev.get("markets", [])
         # H2H check
         for mkt in markets:
             if MarketFilter.is_head_to_head(mkt):
                 return "h2h"
         # 3-way draw check
-        draw_markets = [m for m in markets if m.get("groupItemTitle")]
-        if len(draw_markets) == 3:
+        grouped = [m for m in markets if m.get("groupItemTitle")]
+        if len(grouped) == 3:
             draw_mkts = [
-                m for m in draw_markets
+                m for m in grouped
                 if "draw" in (m.get("groupItemTitle") or "").lower()
             ]
             if len(draw_mkts) == 1:
@@ -189,8 +193,9 @@ def scan_slug(slug: str) -> SlugInfo:
         updated_at=now,
     )
 
-    # Fetch newest events
-    newest = _fetch_events(api_tag, ascending=False, limit=30)
+    # Fetch newest events — use larger limit for sports with many prop
+    # events that can bury game-level events (e.g. NFL off-season)
+    newest = _fetch_events(api_tag, ascending=False, limit=100)
     if not newest:
         # Check if there are active events
         active = _fetch_active_count(api_tag)

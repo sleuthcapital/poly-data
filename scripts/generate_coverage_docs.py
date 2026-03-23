@@ -54,7 +54,7 @@ SLUG_NAMES: dict[str, str] = {
     # Baseball
     "wbc": "World Baseball Classic",
     # Tennis
-    "atp": "ATP", "wta": "WTA",
+    "atp": "ATP", "wta": "WTA", "tennis": "Tennis",
     # Table Tennis
     "wtt-mens-singles": "WTT Men's Singles",
     # Golf
@@ -187,8 +187,8 @@ def generate_page(registry: dict[str, SlugInfo]) -> str:
 
         w(f"## {display}")
         w("")
-        w("| Status | League | Slug | Type | Earliest | Latest | Events |")
-        w("|:------:|--------|------|:----:|:--------:|:------:|:------:|")
+        w("| Status | League | Slug | Type | Earliest | Latest |")
+        w("|:------:|--------|------|:----:|:--------:|:------:|")
 
         for s in slugs_list:
             icon = _status_icon(s.status)
@@ -196,8 +196,7 @@ def generate_page(registry: dict[str, SlugInfo]) -> str:
             badge = _market_badge(s.market_type)
             e = s.earliest_date or "—"
             l = s.latest_date or "—"
-            cnt = str(s.event_count) if s.event_count else "—"
-            w(f"| {icon} | {name} | `{s.slug}` | {badge} | {e} | {l} | {cnt} |")
+            w(f"| {icon} | {name} | `{s.slug}` | {badge} | {e} | {l} |")
         w("")
 
     # How to query

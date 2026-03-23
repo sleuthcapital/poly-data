@@ -45,7 +45,7 @@ class SlugInfo:
     """High-level sport category (``soccer``, ``basketball``, …)."""
 
     market_type: str | None = None
-    """``"h2h"`` (2-outcome), ``"draw"`` (3-way), or *None* if unknown."""
+    """``"h2h"`` (2-outcome), ``"draw"`` (3-way), or *None*."""
 
     status: str = "unknown"
     """One of ``active`` · ``no_history`` · ``no_events`` · ``active_only`` · ``unknown``."""
