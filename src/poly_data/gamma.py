@@ -12,7 +12,33 @@ from poly_data._http import GAMMA_API, get_json
 logger = logging.getLogger(__name__)
 
 # Default sport slugs used for queries.
-DEFAULT_SPORT_SLUGS = ["nba", "nfl", "mlb", "nhl", "soccer", "mma", "tennis"]
+# Covers all 42 slugs with confirmed resolved game data on Polymarket.
+DEFAULT_SPORT_SLUGS = [
+    # --- US traditional ---
+    "nba", "nfl", "mlb", "nhl",
+    # --- College ---
+    "cbb", "cwbb", "cfb",
+    # --- Soccer ---
+    "epl", "laliga", "bundesliga", "ligue-1", "mls", "ucl", "uel", "sea",
+    "mex", "ere", "tur", "sud", "itc", "lib",
+    "caf", "concacaf", "conmebol", "uef-qualifiers",
+    # --- Hockey ---
+    "cehl", "dehl", "ahl", "khl", "shl",
+    # --- Combat ---
+    "mwoh", "wwoh", "wbc",
+    # --- Lacrosse ---
+    "pll", "wll",
+    # --- Individual ---
+    "atp", "wta", "golf",
+    # --- Esports ---
+    "counter-strike", "call-of-duty", "dota-2", "league-of-legends",
+    "mobile-legends-bang-bang", "overwatch", "rainbow-six-siege",
+    "rocket-league", "starcraft-2", "valorant",
+    # --- Tennis (table) ---
+    "wtt-mens-singles",
+    # --- Cricket ---
+    "cricipl", "cricpsl", "cricss",
+]
 
 
 class GammaClient:

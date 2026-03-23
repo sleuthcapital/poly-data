@@ -344,13 +344,75 @@ def extract_winner(market: dict[str, Any]) -> str | None:
     return None
 
 
-def detect_sport(title: str, tags: list[Any] | None = None) -> str:
-    """Detect the sport from event tags or title keywords.
+def detect_sport(title: str, tags: list[Any] | None = None, slug: str | None = None) -> str:
+    """Detect the sport from event tags, slug, or title keywords.
 
     Returns an uppercase sport name (``"NBA"``, ``"SOCCER"``, ``"CS2"``, etc.)
     or ``"UNKNOWN"`` if undetectable.
+
+    Parameters
+    ----------
+    title : str
+        Event title.
+    tags : list, optional
+        Gamma API tags.
+    slug : str, optional
+        Polymarket tag slug (e.g. "epl", "cbb").
     """
-    # Prefer tags if available
+    # --- Slug-based detection (most reliable) ---
+    if slug:
+        slug_lower = slug.lower()
+        slug_sport_map: dict[str, str] = {
+            # US sports
+            "nba": "NBA", "nfl": "NFL", "mlb": "MLB", "nhl": "NHL",
+            "cbb": "NCAAM", "cwbb": "NCAAW", "cfb": "NCAAF",
+            # Soccer
+            "epl": "SOCCER", "laliga": "SOCCER", "bundesliga": "SOCCER",
+            "ligue-1": "SOCCER", "mls": "SOCCER", "ucl": "SOCCER",
+            "uel": "SOCCER", "sea": "SOCCER", "bra": "SOCCER", "bra2": "SOCCER",
+            "chi1": "SOCCER", "col1": "SOCCER", "mex": "SOCCER", "per1": "SOCCER",
+            "jap": "SOCCER", "kor": "SOCCER", "csl": "SOCCER", "ere": "SOCCER",
+            "por": "SOCCER", "tur": "SOCCER", "nor": "SOCCER", "den": "SOCCER",
+            "spl": "SOCCER", "rou1": "SOCCER", "cze1": "SOCCER", "egy1": "SOCCER",
+            "mar1": "SOCCER", "sud": "SOCCER", "ssc": "SOCCER", "cdr": "SOCCER",
+            "cde": "SOCCER", "dfb": "SOCCER", "itc": "SOCCER", "acn": "SOCCER",
+            "afc-wc": "SOCCER", "caf": "SOCCER", "concacaf": "SOCCER",
+            "conmebol": "SOCCER", "crint": "SOCCER", "cehl": "SOCCER",
+            "dehl": "SOCCER", "fifa-friendlies": "SOCCER", "ja2": "SOCCER",
+            "lib": "SOCCER", "ucol": "SOCCER", "uef-qualifiers": "SOCCER",
+            "ruprem": "SOCCER", "rueuchamp": "SOCCER", "rusixnat": "SOCCER",
+            "rusrp": "SOCCER", "rutopft": "SOCCER", "ruurc": "SOCCER",
+            "aus": "SOCCER",
+            # Hockey
+            "ahl": "HOCKEY", "khl": "HOCKEY", "shl": "HOCKEY",
+            # International basketball
+            "bkarg": "BASKETBALL", "bkcba": "BASKETBALL", "bkcl": "BASKETBALL",
+            "bkfr1": "BASKETBALL", "bkkbl": "BASKETBALL", "bkligend": "BASKETBALL",
+            "bknbl": "BASKETBALL", "bkseriea": "BASKETBALL",
+            # Combat
+            "mwoh": "MMA", "wwoh": "MMA", "wbc": "BOXING",
+            # Lacrosse
+            "pll": "LACROSSE", "wll": "LACROSSE",
+            # Tennis
+            "atp": "TENNIS", "wta": "TENNIS", "wtt-mens-singles": "TENNIS",
+            # Cricket
+            "cricbbl": "CRICKET", "criccsat20w": "CRICKET", "crichkt20w": "CRICKET",
+            "cricipl": "CRICKET", "criclcl": "CRICKET", "cricpakt20cup": "CRICKET",
+            "cricps": "CRICKET", "cricpsl": "CRICKET", "cricss": "CRICKET",
+            "crict20lpl": "CRICKET", "cricthunderbolt": "CRICKET", "cricwncl": "CRICKET",
+            # Esports
+            "counter-strike": "CS2", "call-of-duty": "COD", "dota-2": "DOTA2",
+            "league-of-legends": "LOL", "mobile-legends-bang-bang": "MOBILE_LEGENDS",
+            "overwatch": "OVERWATCH", "rainbow-six-siege": "RAINBOW_SIX",
+            "rocket-league": "ROCKET_LEAGUE", "starcraft-2": "STARCRAFT",
+            "valorant": "VALORANT",
+            # Other
+            "golf": "GOLF",
+        }
+        if slug_lower in slug_sport_map:
+            return slug_sport_map[slug_lower]
+
+    # --- Tag-based detection ---
     if tags:
         tag_labels = [
             t.get("label", "").lower() if isinstance(t, dict) else str(t).lower()
@@ -359,9 +421,9 @@ def detect_sport(title: str, tags: list[Any] | None = None) -> str:
         tag_str = " ".join(tag_labels)
 
         # Traditional sports (check longer names first to avoid substring matches)
-        for sport in ["wnba", "ncaaf", "ncaam", "nba", "nfl", "mlb", "nhl",
+        for sport in ["wnba", "ncaaf", "ncaam", "ncaaw", "nba", "nfl", "mlb", "nhl",
                        "mma", "ufc", "tennis", "golf", "boxing", "cricket",
-                       "rugby", "f1"]:
+                       "rugby", "f1", "lacrosse"]:
             if sport in tag_str:
                 return sport.upper()
 
@@ -375,6 +437,7 @@ def detect_sport(title: str, tags: list[Any] | None = None) -> str:
         soccer_indicators = [
             "soccer", "premier-league", "champions-league", "la-liga",
             "bundesliga", "serie-a", "ligue-1", "mls", "europa-league", "epl",
+            "libertadores", "concacaf", "conmebol", "copa-del-rey",
         ]
         if any(ind in tag_str for ind in soccer_indicators):
             return "SOCCER"
@@ -387,34 +450,62 @@ def detect_sport(title: str, tags: list[Any] | None = None) -> str:
             "dota": "DOTA2", "dota-2": "DOTA2", "dota2": "DOTA2",
             "overwatch": "OVERWATCH",
             "call-of-duty": "COD", "cod": "COD",
+            "mobile-legends": "MOBILE_LEGENDS",
+            "rainbow-six": "RAINBOW_SIX",
+            "rocket-league": "ROCKET_LEAGUE",
+            "starcraft": "STARCRAFT",
         }
         for key, sport in esport_map.items():
             if key in tag_str:
                 return sport
 
+        # Hockey leagues
+        if any(h in tag_str for h in ["ahl", "khl", "shl", "hockey"]):
+            return "HOCKEY"
+
         # Catch-all esports tag
         if "esports" in tag_str:
             return "ESPORTS"
 
-    # Fall back to title-based detection
+    # --- Fall back to title-based detection ---
     title_lower = title.lower()
     for sport in ["wnba", "nba", "nfl", "mlb", "nhl", "mma", "ufc", "f1"]:
         if sport in title_lower:
             return sport.upper()
 
-    soccer_title_hints = ["premier league", "champions league", "la liga", "bundesliga", "serie a"]
+    # Title prefixes for esports
+    esport_title_prefixes = {
+        "cs:": "CS2", "counter-strike": "CS2", "cs2": "CS2",
+        "valorant": "VALORANT",
+        "lol:": "LOL", "league of legends": "LOL",
+        "dota 2": "DOTA2", "dota2": "DOTA2",
+        "overwatch": "OVERWATCH",
+        "call of duty": "COD",
+        "mobile legends": "MOBILE_LEGENDS",
+        "rainbow six": "RAINBOW_SIX",
+        "rocket league": "ROCKET_LEAGUE",
+        "starcraft": "STARCRAFT",
+    }
+    for hint, sport in esport_title_prefixes.items():
+        if hint in title_lower:
+            return sport
+
+    # Soccer title hints
+    soccer_title_hints = [
+        "premier league", "champions league", "la liga", "bundesliga",
+        "serie a", "ligue 1", "eredivisie", "libertadores", "copa del rey",
+    ]
     if any(hint in title_lower for hint in soccer_title_hints):
         return "SOCCER"
 
-    esport_title_hints = {
-        "counter-strike": "CS2", "cs2": "CS2",
-        "valorant": "VALORANT",
-        "league of legends": "LOL",
-        "dota": "DOTA2",
-        "overwatch": "OVERWATCH",
+    # League prefixes in titles (e.g. "AHL: Calgary..." or "KHL: Spartak...")
+    league_title_map = {
+        "ahl:": "HOCKEY", "khl:": "HOCKEY", "shl:": "HOCKEY",
+        "del:": "HOCKEY", "elh:": "HOCKEY",
+        "pll:": "LACROSSE",
     }
-    for hint, sport in esport_title_hints.items():
-        if hint in title_lower:
+    for prefix, sport in league_title_map.items():
+        if title_lower.startswith(prefix):
             return sport
 
     return "UNKNOWN"

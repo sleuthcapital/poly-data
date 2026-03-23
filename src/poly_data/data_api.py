@@ -86,3 +86,48 @@ class DataAPIClient:
         if "timestamp" in df.columns:
             df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
         return df
+
+    # ------------------------------------------------------------------
+    # Reconstruct price history from trades
+    # ------------------------------------------------------------------
+    @staticmethod
+    def trades_to_price_history(
+        trades: list[dict[str, Any]],
+        outcome: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """Convert trade records into a CLOB-compatible price history.
+
+        This is the **primary way to get price history for resolved markets**
+        since the CLOB ``prices-history`` endpoint purges data after resolution.
+
+        Each trade already has ``timestamp`` (unix int) and ``price``.  This
+        method filters by *outcome* (if given), deduplicates, and returns
+        ``[{"t": <unix_ts>, "p": <price>}, ...]`` sorted by time — the same
+        shape as :meth:`~poly_data.ClobClient.fetch_price_history`.
+
+        Parameters
+        ----------
+        trades : list[dict]
+            Raw trades from :meth:`fetch_trades`.
+        outcome : str | None
+            If given, keep only trades for this outcome label
+            (e.g. ``"Florida"``).  If ``None``, uses all trades.
+
+        Returns
+        -------
+        list[dict]
+            Price points ``{"t": int, "p": float}`` sorted ascending.
+        """
+        filtered = trades
+        if outcome is not None:
+            filtered = [t for t in trades if t.get("outcome") == outcome]
+
+        points: list[dict[str, Any]] = []
+        for t in filtered:
+            ts = t.get("timestamp")
+            price = t.get("price")
+            if ts is not None and price is not None:
+                points.append({"t": int(ts), "p": float(price)})
+
+        points.sort(key=lambda p: p["t"])
+        return points

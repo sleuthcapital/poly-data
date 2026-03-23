@@ -15,43 +15,78 @@ logger = logging.getLogger(__name__)
 
 # ESPN sport paths — one per league.
 ESPN_SPORT_PATHS: dict[str, list[str]] = {
-    # --- Traditional US sports (P0, live) ---
+    # --- Traditional US sports ---
     "nba": ["basketball/nba"],
     "nfl": ["football/nfl"],
     "mlb": ["baseball/mlb"],
     "nhl": ["hockey/nhl"],
-    # --- Soccer (P0, live) ---
+    # --- Soccer — individual leagues ---
     "soccer": [
-        "soccer/eng.1",     # EPL
-        "soccer/esp.1",     # La Liga
-        "soccer/ger.1",     # Bundesliga
-        "soccer/ita.1",     # Serie A
-        "soccer/fra.1",     # Ligue 1
-        "soccer/usa.1",     # MLS
-        "soccer/uefa.champions",  # UCL
-        "soccer/uefa.europa",     # UEL
+        "soccer/eng.1",             # EPL
+        "soccer/esp.1",             # La Liga
+        "soccer/ger.1",             # Bundesliga
+        "soccer/ita.1",             # Serie A
+        "soccer/fra.1",             # Ligue 1
+        "soccer/usa.1",             # MLS
+        "soccer/uefa.champions",    # UCL
+        "soccer/uefa.europa",       # UEL
+        "soccer/uefa.europa.conf",  # Conference League
+        "soccer/mex.1",             # Liga MX
+        "soccer/ned.1",             # Eredivisie
+        "soccer/tur.1",             # Turkish Süper Lig
+        "soccer/bra.1",             # Brasileirão
+        "soccer/arg.1",             # Argentine Primera
+        "soccer/col.1",             # Colombian league
+        "soccer/per.1",             # Peruvian league
+        "soccer/ecu.1",             # Ecuadorian league
+        "soccer/jpn.1",             # J-League
+        "soccer/chn.1",             # Chinese Super League
+        "soccer/nor.1",             # Norwegian Eliteserien
+        "soccer/den.1",             # Danish Superliga
+        "soccer/sco.1",             # Scottish Premiership
+        "soccer/rou.1",             # Romanian Liga 1
+        "soccer/cze.1",             # Czech First League
+        "soccer/rus.1",             # Russian Premier League
+        "soccer/conmebol.libertadores",  # Copa Libertadores
+        "soccer/conmebol.sudamericana",  # Copa Sudamericana
+        "soccer/concacaf.champions",     # CONCACAF Champions Cup
+        "soccer/caf.champions",          # CAF Champions League
+        "soccer/caf.nations",            # Africa Cup of Nations
+        "soccer/afc.cup",               # AFC Cup
+        "soccer/ita.coppa_italia",       # Coppa Italia
+        "soccer/esp.copa_del_rey",       # Copa del Rey
+        "soccer/ger.dfb_pokal",          # DFB-Pokal
+        "soccer/fifa.friendly",          # International friendlies
     ],
-    # --- Combat sports (P1) ---
+    # --- Combat sports ---
     "mma": ["mma/ufc"],
-    # --- College sports (P1) ---
+    # --- College sports ---
     "ncaam": ["basketball/mens-college-basketball"],
+    "ncaaw": ["basketball/womens-college-basketball"],
     "ncaaf": ["football/college-football"],
-    # --- Other traditional (P2) ---
+    # --- Other traditional ---
     "wnba": ["basketball/wnba"],
-    "tennis": ["tennis/atp"],
+    "tennis": ["tennis/atp", "tennis/wta"],
     "golf": ["golf/pga"],
     "f1": ["racing/f1"],
-    "cricket": ["cricket/icc"],  # Seasonal — may return 0 events outside tournaments
-    # --- Esports — no ESPN coverage, use PandaScore ---
+    "cricket": ["cricket/icc"],
+    "lacrosse": ["lacrosse/pll"],
+    # --- Esports — no ESPN coverage ---
     "cs2": [],
     "valorant": [],
     "lol": [],
     "dota2": [],
     "overwatch": [],
     "cod": [],
-    # --- No ESPN endpoint found ---
+    "mobile-legends": [],
+    "rainbow-six": [],
+    "rocket-league": [],
+    "starcraft": [],
+    # --- No ESPN endpoint ---
     "rugby": [],
     "boxing": [],
+    "chess": [],
+    "pickleball": [],
 }
 
 # In-memory cache to avoid repeated ESPN calls for the same date/sport.
