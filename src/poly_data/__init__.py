@@ -9,6 +9,15 @@ from poly_data.clob import ClobClient
 from poly_data.data_api import DataAPIClient
 from poly_data.espn import ESPNClient
 from poly_data.markets import MarketFilter, DrawMarketGroup, group_draw_markets
+from poly_data.coverage import (
+    SlugInfo,
+    load_registry,
+    save_registry,
+    coverage_df,
+    active_slugs,
+    slugs_by_sport,
+    coverage_summary,
+)
 
 __all__ = [
     "GammaClient",
@@ -18,6 +27,13 @@ __all__ = [
     "MarketFilter",
     "DrawMarketGroup",
     "group_draw_markets",
+    "SlugInfo",
+    "load_registry",
+    "save_registry",
+    "coverage_df",
+    "active_slugs",
+    "slugs_by_sport",
+    "coverage_summary",
 ]
 
 __version__ = "0.1.0"

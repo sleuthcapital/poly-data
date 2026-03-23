@@ -2,6 +2,7 @@
 
 from poly_data import GammaClient, ClobClient, DataAPIClient, ESPNClient, MarketFilter
 from poly_data import DrawMarketGroup, group_draw_markets
+from poly_data import SlugInfo, load_registry, coverage_df, active_slugs, slugs_by_sport, coverage_summary
 from poly_data.markets import parse_json_field, extract_winner, detect_sport
 from poly_data.io import save_json, load_json
 
@@ -13,6 +14,8 @@ def test_imports():
     assert DataAPIClient is not None
     assert ESPNClient is not None
     assert MarketFilter is not None
+    assert SlugInfo is not None
+    assert load_registry is not None
 
 
 def test_parse_json_field_string():
@@ -460,3 +463,83 @@ def test_estimate_game_end_unknown_sport():
     event = {"date": "2026-03-23T01:00Z", "competitions": []}
     end = ESPNClient.estimate_game_end(event, "curling")
     assert end == "2026-03-23T03:30:00Z"  # default 150 min
+
+
+# --- Coverage registry tests ---
+
+from poly_data.coverage import SlugInfo, save_registry, load_registry
+
+
+def test_slug_info_defaults():
+    info = SlugInfo(slug="test", api_tag="test", sport="unknown")
+    assert info.status == "unknown"
+    assert info.market_type is None
+    assert info.event_count == 0
+    assert info.earliest_date is None
+
+
+def test_registry_roundtrip(tmp_path):
+    reg = {
+        "nba": SlugInfo(
+            slug="nba", api_tag="nba", sport="basketball",
+            market_type="h2h", status="active",
+            earliest_date="2023-12-26", latest_date="2026-03-22",
+            event_count=30, sample_title="Lakers vs. Celtics",
+        ),
+        "laliga": SlugInfo(
+            slug="laliga", api_tag="la-liga", sport="soccer",
+            market_type="draw", status="active",
+            earliest_date="2024-05-31", latest_date="2026-03-22",
+            event_count=30, sample_title="Real Madrid vs. Barcelona",
+        ),
+    }
+    path = tmp_path / "coverage.json"
+    save_registry(reg, path)
+    loaded = load_registry(path)
+    assert len(loaded) == 2
+    assert loaded["nba"].api_tag == "nba"
+    assert loaded["nba"].market_type == "h2h"
+    assert loaded["nba"].earliest_date == "2023-12-26"
+    assert loaded["laliga"].api_tag == "la-liga"
+    assert loaded["laliga"].sport == "soccer"
+
+
+def test_load_registry_missing_file(tmp_path):
+    reg = load_registry(tmp_path / "nonexistent.json")
+    assert reg == {}
+
+
+def test_active_slugs_from_file():
+    """The shipped coverage_data.json should have active slugs."""
+    slugs = active_slugs()
+    assert len(slugs) > 50  # we know 87 are active
+    assert "nba" in slugs
+    assert "epl" in slugs
+
+
+def test_coverage_df_columns():
+    df = coverage_df()
+    assert not df.empty
+    for col in ["slug", "api_tag", "sport", "market_type", "status",
+                 "earliest_date", "latest_date", "event_count"]:
+        assert col in df.columns, f"Missing column: {col}"
+
+
+def test_coverage_df_has_dates():
+    """Active slugs should have earliest/latest dates."""
+    df = coverage_df()
+    active = df[df["status"] == "active"]
+    assert active["earliest_date"].notna().sum() > 50
+
+
+def test_slugs_by_sport():
+    soccer = slugs_by_sport("soccer")
+    assert len(soccer) > 20
+    assert all(s.sport == "soccer" for s in soccer)
+
+
+def test_coverage_summary_string():
+    s = coverage_summary()
+    assert "Coverage Registry" in s
+    assert "soccer" in s
+    assert "Backtest date range" in s
