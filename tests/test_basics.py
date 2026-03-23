@@ -1,6 +1,7 @@
 """Smoke tests for poly_data clients."""
 
 from poly_data import GammaClient, ClobClient, DataAPIClient, ESPNClient, MarketFilter
+from poly_data import DrawMarketGroup, group_draw_markets
 from poly_data.markets import parse_json_field, extract_winner, detect_sport
 from poly_data.io import save_json, load_json
 
@@ -234,3 +235,190 @@ def test_espn_paths_traditional_populated():
     """Traditional sports have at least one ESPN path."""
     for sport in ["nba", "nfl", "mlb", "nhl", "soccer", "mma"]:
         assert len(ESPN_SPORT_PATHS[sport]) > 0, f"{sport} should have ESPN paths"
+
+
+# --- DrawMarketGroup tests ---
+
+def _make_soccer_event(team_a="Liverpool", team_b="Manchester City"):
+    """Build a fake soccer event with 3 separate Yes/No markets."""
+    return {
+        "title": f"{team_a} vs {team_b}",
+        "tags": [{"label": "premier-league"}, {"label": "soccer"}],
+        "markets": [
+            {
+                "question": f"Will {team_a} win on 2026-03-22?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["token_a_yes", "token_a_no"]',
+                "conditionId": "0xaaa",
+            },
+            {
+                "question": f"Will {team_b} win on 2026-03-22?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["token_b_yes", "token_b_no"]',
+                "conditionId": "0xbbb",
+            },
+            {
+                "question": f"Will {team_a} vs. {team_b} end in a draw?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["token_draw_yes", "token_draw_no"]',
+                "conditionId": "0xccc",
+            },
+        ],
+    }
+
+
+def test_draw_group_complete():
+    grp = DrawMarketGroup(_make_soccer_event())
+    assert grp.is_complete
+    assert grp.team_a == "Liverpool"
+    assert grp.team_b == "Manchester City"
+
+
+def test_draw_group_teams():
+    grp = DrawMarketGroup(_make_soccer_event("Arsenal", "Chelsea"))
+    assert grp.teams == ("Arsenal", "Chelsea")
+
+
+def test_draw_group_yes_token_ids():
+    grp = DrawMarketGroup(_make_soccer_event())
+    tokens = grp.yes_token_ids()
+    assert tokens["team_a"] == "token_a_yes"
+    assert tokens["team_b"] == "token_b_yes"
+    assert tokens["draw"] == "token_draw_yes"
+
+
+def test_draw_group_condition_ids():
+    grp = DrawMarketGroup(_make_soccer_event())
+    cids = grp.condition_ids()
+    assert cids["team_a"] == "0xaaa"
+    assert cids["team_b"] == "0xbbb"
+    assert cids["draw"] == "0xccc"
+
+
+def test_draw_group_implied_probabilities():
+    grp = DrawMarketGroup(_make_soccer_event())
+    midpoints = {"team_a": 0.45, "team_b": 0.30, "draw": 0.28}
+    probs = grp.implied_probabilities(midpoints)
+    # Should sum to ~1.0
+    assert abs(probs["team_a"] + probs["team_b"] + probs["draw"] - 1.0) < 1e-9
+    # Overround should be raw total
+    assert abs(probs["overround"] - 1.03) < 1e-9
+    # team_a should have highest probability
+    assert probs["team_a"] > probs["team_b"]
+    assert probs["team_a"] > probs["draw"]
+
+
+def test_draw_group_implied_probabilities_zero():
+    grp = DrawMarketGroup(_make_soccer_event())
+    midpoints = {"team_a": 0.0, "team_b": 0.0, "draw": 0.0}
+    probs = grp.implied_probabilities(midpoints)
+    assert probs["team_a"] == 0.0
+    assert probs["overround"] == 0.0
+
+
+def test_draw_group_incomplete_no_draw():
+    event = _make_soccer_event()
+    event["markets"] = event["markets"][:2]  # remove draw
+    grp = DrawMarketGroup(event)
+    assert not grp.is_complete
+
+
+def test_draw_group_incomplete_single_win():
+    event = _make_soccer_event()
+    event["markets"] = [event["markets"][0], event["markets"][2]]  # only 1 win + draw
+    grp = DrawMarketGroup(event)
+    assert not grp.is_complete
+
+
+def test_draw_group_repr():
+    grp = DrawMarketGroup(_make_soccer_event())
+    assert "Liverpool" in repr(grp)
+    assert "complete" in repr(grp)
+
+
+def test_draw_group_beat_format():
+    """Test parsing 'Will X beat Y?' format."""
+    event = {
+        "title": "Arsenal vs Chelsea",
+        "tags": [{"label": "premier-league"}],
+        "markets": [
+            {
+                "question": "Will Arsenal beat Chelsea?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["t1", "t2"]',
+                "conditionId": "0x1",
+            },
+            {
+                "question": "Will Chelsea beat Arsenal?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["t3", "t4"]',
+                "conditionId": "0x2",
+            },
+            {
+                "question": "Will Arsenal vs Chelsea end in a draw?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["t5", "t6"]',
+                "conditionId": "0x3",
+            },
+        ],
+    }
+    grp = DrawMarketGroup(event)
+    assert grp.is_complete
+    assert grp.team_a == "Arsenal"
+    assert grp.team_b == "Chelsea"
+
+
+def test_group_draw_markets():
+    events = [
+        _make_soccer_event("Liverpool", "Man City"),
+        _make_soccer_event("Arsenal", "Chelsea"),
+        # Non-soccer event — should be skipped
+        {
+            "title": "Lakers vs Celtics",
+            "tags": [{"label": "nba"}],
+            "markets": [{"question": "Lakers vs. Celtics", "outcomes": '["Lakers", "Celtics"]'}],
+        },
+    ]
+    groups = group_draw_markets(events)
+    assert len(groups) == 2
+    assert groups[0].team_a == "Liverpool"
+    assert groups[1].team_a == "Arsenal"
+
+
+def test_group_draw_markets_incomplete_skipped():
+    """Incomplete groups (missing draw market) should be excluded."""
+    event = _make_soccer_event()
+    event["markets"] = event["markets"][:2]  # no draw
+    groups = group_draw_markets([event])
+    assert len(groups) == 0
+
+
+def test_draw_group_non_binary_outcomes_skipped():
+    """Markets with non-binary outcomes should be ignored during parsing."""
+    event = {
+        "title": "Liverpool vs Man City",
+        "tags": [{"label": "soccer"}],
+        "markets": [
+            {
+                "question": "Will Liverpool win on 2026-03-22?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["t1", "t2"]',
+                "conditionId": "0x1",
+            },
+            {
+                "question": "Will Man City win on 2026-03-22?",
+                "outcomes": '["Liverpool", "Man City", "Draw"]',  # NOT binary
+                "clobTokenIds": '["t3", "t4", "t5"]',
+                "conditionId": "0x2",
+            },
+            {
+                "question": "Will the match end in a draw?",
+                "outcomes": '["Yes", "No"]',
+                "clobTokenIds": '["t6", "t7"]',
+                "conditionId": "0x3",
+            },
+        ],
+    }
+    grp = DrawMarketGroup(event)
+    # Only 1 win market parsed (the non-binary one was skipped), so incomplete
+    assert not grp.is_complete

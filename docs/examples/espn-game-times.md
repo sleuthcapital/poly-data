@@ -19,12 +19,36 @@ for ev in events[:3]:
     print(f"  {ev['name']}  —  {ev.get('date', 'TBD')}")
 ```
 
+## Soccer: Current Matchday
+
+ESPN soccer uses **matchday-based windows** rather than exact calendar dates.
+Pass `None` as the date to get the current matchday across all leagues:
+
+```python
+espn = ESPNClient()
+
+# Current matchday (no date param — gets whatever ESPN considers "today's" games)
+soccer_events = espn.fetch_scoreboard("soccer")  # date_str=None
+print(f"Soccer current matchday: {len(soccer_events)} games")
+
+for ev in soccer_events[:5]:
+    print(f"  {ev['name']}  —  {ev.get('date', 'TBD')}")
 ```
-NBA today: 10 games
-  Los Angeles Lakers at Detroit Pistons  —  2026-03-23T23:10:00Z
-  Orlando Magic at Indiana Pacers  —  2026-03-23T23:00:00Z
-  Miami Heat at Boston Celtics  —  2026-03-24T00:30:00Z
+
 ```
+Soccer current matchday: 15 games
+  Sunderland at Newcastle United  —  2026-03-22T12:00Z
+  West Ham United at Aston Villa  —  2026-03-22T14:15Z
+  Rayo Vallecano at Barcelona     —  2026-03-22T20:00Z
+  Eintracht Frankfurt at Mainz    —  2026-03-22T14:30Z
+  ...
+```
+
+!!! warning "Date parameter quirks for soccer"
+    Passing a specific date like `"20260323"` may return **0 events** for soccer
+    even when games are scheduled — because ESPN soccer scoreboards are organized
+    by matchday, not UTC calendar date.  Always also query with `date_str=None`
+    for the current round's games.
 
 ## All Supported Sports
 
@@ -36,27 +60,17 @@ today = datetime.now(timezone.utc).strftime("%Y%m%d")
 
 for sport in ["nba", "nfl", "mlb", "nhl", "soccer", "mma",
               "ncaam", "ncaaf", "wnba", "tennis", "golf", "f1"]:
-    events = espn.fetch_scoreboard(sport, today)
+    # Use explicit date for most sports, but default for soccer
+    if sport == "soccer":
+        events = espn.fetch_scoreboard(sport)  # current matchday
+    else:
+        events = espn.fetch_scoreboard(sport, today)
     print(f"  {sport:8s} → {len(events):3d} events")
 ```
 
-```
-  nba      →  10 events
-  nfl      →   0 events
-  mlb      →  12 events
-  nhl      →   1 events
-  soccer   →   0 events
-  mma      →   0 events
-  ncaam    →   0 events
-  ncaaf    →   0 events
-  wnba     →   0 events
-  tennis   →   1 events
-  golf     →   1 events
-  f1       →   0 events
-```
-
 !!! note "Off-season sports return 0"
-    NFL, college basketball, WNBA etc. will return 0 events when out of season. This is expected.
+    NFL, college basketball, WNBA etc. will return 0 events when out of season.
+    This is expected.
 
 ## Soccer Leagues
 
@@ -102,12 +116,13 @@ for ev in events[:3]:
 
 ## Match Polymarket Titles to ESPN
 
-The `find_game_time` method matches a Polymarket "X vs. Y" title to an ESPN scoreboard event:
+The `find_game_time` method matches a Polymarket "X vs. Y" title to an ESPN scoreboard event.
+For soccer, it also checks the current matchday automatically:
 
 ```python
 espn = ESPNClient()
 
-# Searches ±3 days around the anchor date
+# Traditional sport — searches ±3 days around the anchor date
 game_time = espn.find_game_time(
     title="Lakers vs. Pistons",
     anchor_date="2026-03-23",
@@ -115,18 +130,24 @@ game_time = espn.find_game_time(
     search_days=3,
 )
 print(f"Game time: {game_time}")
-```
 
-```
-Game time: 2026-03-23T23:10:00Z
+# Soccer — also checks the current matchday (no date param)
+game_time = espn.find_game_time(
+    title="Newcastle United vs. Sunderland",
+    anchor_date="2026-03-22",
+    sport="soccer",
+    search_days=3,
+)
+print(f"Soccer game time: {game_time}")
 ```
 
 ### How Matching Works
 
 1. **Extract teams** from the Polymarket title using `extract_poly_teams("Lakers vs. Pistons")` → `["Lakers", "Pistons"]`
 2. **Normalize** team names — strip FC/SC/the, lowercase, remove punctuation
-3. **Search** ESPN scoreboards ±N days around the anchor date
-4. **Fuzzy match** — if both Polymarket team names are substrings of (or contain) ESPN team names, it's a match
+3. For **soccer**, first check the current matchday (ESPN default, no date param)
+4. **Search** ESPN scoreboards ±N days around the anchor date
+5. **Fuzzy match** — if both Polymarket team names are substrings of (or contain) ESPN team names, it's a match
 
 ```python
 # Team normalization

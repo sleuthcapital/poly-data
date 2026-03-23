@@ -170,3 +170,54 @@ unresolved = {
 }
 print(extract_winner(unresolved))  # → None (not yet resolved)
 ```
+
+## Draw Markets (Soccer)
+
+Soccer events on Polymarket use three separate Yes/No markets for a single match.
+`DrawMarketGroup` unifies them:
+
+```python
+from poly_data import GammaClient, ClobClient, DrawMarketGroup, group_draw_markets
+
+gamma = GammaClient()
+clob = ClobClient()
+
+events = gamma.fetch_events(active_only=True, sport_slugs=["soccer"])
+groups = group_draw_markets(events)
+print(f"{len(groups)} complete draw-market groups")
+
+grp = groups[0]
+print(grp)                  # DrawMarketGroup(Liverpool vs Manchester City, complete)
+print(grp.teams)            # ('Liverpool', 'Manchester City')
+
+# Each sub-market has its own conditionId
+print(grp.condition_ids())
+# {'team_a': '0xabc…', 'team_b': '0xdef…', 'draw': '0x123…'}
+
+# Get Yes token IDs for pricing
+tokens = grp.yes_token_ids()
+# {'team_a': '501319…', 'team_b': '966830…', 'draw': '443892…'}
+
+# Fetch midpoints and compute implied probabilities
+midpoints = {role: clob.fetch_midpoint(tid) for role, tid in tokens.items()}
+probs = grp.implied_probabilities(midpoints)
+print(f"  {grp.team_a}: {probs['team_a']:.1%}")
+print(f"  {grp.team_b}: {probs['team_b']:.1%}")
+print(f"  Draw:    {probs['draw']:.1%}")
+print(f"  Overround: {probs['overround']:.1%}")
+```
+
+```
+3 complete draw-market groups
+DrawMarketGroup(Liverpool vs Manchester City, complete)
+('Liverpool', 'Manchester City')
+  Liverpool: 45.2%
+  Manchester City: 28.8%
+  Draw:    26.0%
+  Overround: 103.2%
+```
+
+!!! info "Why three markets?"
+    Polymarket can't represent a 3-way outcome in one market.
+    Instead, each outcome (Team A Win, Team B Win, Draw) is a separate Yes/No contract.
+    `DrawMarketGroup` links them so you can compute true probabilities.

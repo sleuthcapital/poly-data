@@ -178,3 +178,83 @@ Parse a Gamma API field that may be a JSON string or already Python data.
 parse_json_field('["Yes", "No"]')  # → ["Yes", "No"]
 parse_json_field(["Yes", "No"])     # → ["Yes", "No"] (passthrough)
 ```
+
+---
+
+## DrawMarketGroup { #DrawMarketGroup }
+
+```python
+class DrawMarketGroup(event: dict)
+```
+
+Links the three separate Yes/No markets Polymarket creates for soccer matches into a single logical match.
+
+Soccer events contain:
+
+- `"Will Team A win on YYYY-MM-DD?"` → Yes/No
+- `"Will Team B win on YYYY-MM-DD?"` → Yes/No
+- `"Will Team A vs. Team B end in a draw?"` → Yes/No
+
+Each has a different `conditionId` and `clobTokenIds`.
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `is_complete` | `bool` | `True` if all 3 sub-markets found |
+| `teams` | `tuple[str, str]` | `(team_a, team_b)` names |
+| `team_a` | `str` | First team name |
+| `team_b` | `str` | Second team name |
+
+### `yes_token_ids`
+
+```python
+def yes_token_ids() -> dict[str, str]
+```
+
+Returns `{"team_a": "...", "team_b": "...", "draw": "..."}` — the CLOB token ID for the "Yes" outcome of each sub-market.
+
+### `implied_probabilities`
+
+```python
+def implied_probabilities(midpoints: dict[str, float]) -> dict[str, float]
+```
+
+Given raw midpoint prices (e.g. `{"team_a": 0.45, "team_b": 0.30, "draw": 0.28}`), returns normalized probabilities that sum to ~1.0, plus an `"overround"` entry showing the raw total.
+
+### `condition_ids`
+
+```python
+def condition_ids() -> dict[str, str]
+```
+
+Returns `{"team_a": "0x...", "team_b": "0x...", "draw": "0x..."}`.
+
+```python
+from poly_data import DrawMarketGroup
+
+grp = DrawMarketGroup(event)
+if grp.is_complete:
+    print(grp.teams)           # ('Liverpool', 'Man City')
+    print(grp.yes_token_ids()) # {'team_a': '…', 'team_b': '…', 'draw': '…'}
+```
+
+---
+
+## `group_draw_markets` { #group_draw_markets }
+
+```python
+def group_draw_markets(events: list[dict]) -> list[DrawMarketGroup]
+```
+
+Scan a list of Gamma events and return `DrawMarketGroup` instances for all soccer events that have a complete set of 3 sub-markets.
+
+```python
+from poly_data import GammaClient, group_draw_markets
+
+events = GammaClient().fetch_events(active_only=True, sport_slugs=["soccer"])
+groups = group_draw_markets(events)
+print(f"{len(groups)} complete draw-market groups")
+for g in groups[:3]:
+    print(f"  {g}")
+```

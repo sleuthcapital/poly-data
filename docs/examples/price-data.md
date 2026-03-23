@@ -124,23 +124,37 @@ print(df.head())
     The CLOB `/prices-history` endpoint is **cleared after a market resolves**.
     Use `DataAPIClient.fetch_trades()` for post-resolution trade data — it survives resolution.
 
-## Plot: Price History
+## Plot: Price History (Both Outcomes)
+
+Plot both sides of the market to see which team is favored over time:
 
 ```python
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-df = clob.fetch_price_history_df(token_id)
+# Get both token IDs and outcome labels
+tokens = parse_json_field(market.get("clobTokenIds") or market.get("tokens", []))
+outcomes = parse_json_field(market.get("outcomes", []))
+
+df_a = clob.fetch_price_history_df(str(tokens[0]))
+df_b = clob.fetch_price_history_df(str(tokens[1]))
 
 fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(df["timestamp"], df["price"], linewidth=1.5, color="#5C6BC0")
-ax.fill_between(df["timestamp"], df["price"], alpha=0.15, color="#5C6BC0")
+ax.plot(df_a["timestamp"], df_a["price"], linewidth=1.5,
+        color="#5C6BC0", label=outcomes[0])
+ax.fill_between(df_a["timestamp"], df_a["price"], alpha=0.1, color="#5C6BC0")
 
-ax.set_ylabel("Price (probability)")
+ax.plot(df_b["timestamp"], df_b["price"], linewidth=1.5,
+        color="#FF7043", label=outcomes[1], linestyle="--")
+ax.fill_between(df_b["timestamp"], df_b["price"], alpha=0.08, color="#FF7043")
+
+ax.axhline(y=0.5, color="gray", linestyle=":", alpha=0.4, label="50/50")
+ax.set_ylabel("Price (implied probability)")
 ax.set_xlabel("Time")
 ax.set_title(f"Price History — {market['question']}")
 ax.set_ylim(0, 1)
 ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d\n%H:%M"))
+ax.legend(loc="upper right")
 ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
@@ -148,29 +162,34 @@ plt.savefig("price_history.png", dpi=150)
 plt.show()
 ```
 
-![Price history chart](../assets/price_history.png){ loading=lazy }
+![Price history chart with both outcomes](../assets/price_history.png){ loading=lazy }
 
 ## Plot: Order Book Depth
 
+Cumulative depth chart showing liquidity on each side:
+
 ```python
+import numpy as np
 import matplotlib.pyplot as plt
 
 book = clob.fetch_orderbook(token_id)
-bids = book.get("bids", [])
-asks = book.get("asks", [])
+bids = sorted(book.get("bids", []), key=lambda x: -float(x["price"]))
+asks = sorted(book.get("asks", []), key=lambda x: float(x["price"]))
 
 bid_prices = [float(b["price"]) for b in bids]
-bid_sizes = [float(b["size"]) for b in bids]
+bid_cum = list(np.cumsum([float(b["size"]) for b in bids]))
 ask_prices = [float(a["price"]) for a in asks]
-ask_sizes = [float(a["size"]) for a in asks]
+ask_cum = list(np.cumsum([float(a["size"]) for a in asks]))
 
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.bar(bid_prices, bid_sizes, width=0.005, color="#4CAF50", alpha=0.8, label="Bids")
-ax.bar(ask_prices, ask_sizes, width=0.005, color="#F44336", alpha=0.8, label="Asks")
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.fill_between(bid_prices, bid_cum, alpha=0.4, color="#4CAF50", step="post", label="Bids")
+ax.fill_between(ask_prices, ask_cum, alpha=0.4, color="#F44336", step="post", label="Asks")
+ax.step(bid_prices, bid_cum, color="#4CAF50", linewidth=1.5, where="post")
+ax.step(ask_prices, ask_cum, color="#F44336", linewidth=1.5, where="post")
 
 ax.set_xlabel("Price")
-ax.set_ylabel("Size ($)")
-ax.set_title("Order Book Depth")
+ax.set_ylabel("Cumulative Size ($)")
+ax.set_title(f"Order Book Depth — {outcomes[0]}")
 ax.legend()
 ax.grid(True, alpha=0.3)
 

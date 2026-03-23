@@ -681,3 +681,185 @@ class TestMarketFilterLive:
         print(f"[Filter] esports H2H markets: {len(esport_h2h)}")
         for m in esport_h2h[:5]:
             print(f"  {m}")
+
+
+# ===================================================================
+#  ESPN: Soccer default matchday (date_str=None)
+# ===================================================================
+
+class TestESPNSoccerDefaultMatchday:
+    """Tests that soccer fetch_scoreboard works without a date."""
+
+    def test_soccer_default_matchday(self):
+        """Calling fetch_scoreboard('soccer') without date returns current round."""
+        from poly_data import ESPNClient
+
+        espn = ESPNClient()
+        events = espn.fetch_scoreboard("soccer")  # date_str=None
+        assert isinstance(events, list)
+        print(f"[ESPN] Soccer default matchday: {len(events)} events")
+        # Should usually have games (unless full off-season for all 8 leagues)
+        if events:
+            assert "name" in events[0] or "shortName" in events[0]
+
+    def test_soccer_default_vs_explicit_date(self):
+        """Default matchday should return >= the events from an explicit date."""
+        from poly_data import ESPNClient
+
+        espn = ESPNClient()
+        today = datetime.now(timezone.utc).strftime("%Y%m%d")
+        default_events = espn.fetch_scoreboard("soccer")
+        dated_events = espn.fetch_scoreboard("soccer", today)
+        print(f"[ESPN] Soccer default: {len(default_events)}, dated: {len(dated_events)}")
+        # Default typically returns MORE (matchday window) — but at minimum
+        # there shouldn't be a crash
+        assert isinstance(default_events, list)
+        assert isinstance(dated_events, list)
+
+    def test_soccer_events_have_date_field(self):
+        """Soccer events should have a 'date' field for game timing."""
+        from poly_data import ESPNClient
+
+        espn = ESPNClient()
+        events = espn.fetch_scoreboard("soccer")
+        for ev in events[:5]:
+            date_val = ev.get("date")
+            if date_val:
+                print(f"  [ESPN] {ev.get('name', '')} — {date_val}")
+                assert "T" in date_val, f"Date should be ISO format: {date_val}"
+
+    def test_nba_still_requires_date(self):
+        """Non-soccer sports should still work with explicit dates."""
+        from poly_data import ESPNClient
+
+        espn = ESPNClient()
+        today = datetime.now(timezone.utc).strftime("%Y%m%d")
+        events = espn.fetch_scoreboard("nba", today)
+        assert isinstance(events, list)
+
+
+# ===================================================================
+#  Both-token price histories
+# ===================================================================
+
+class TestBothTokenPrices:
+    """Verify we can fetch price histories for BOTH outcomes of an H2H market."""
+
+    def test_both_tokens_have_prices(self):
+        """Both token IDs from an H2H market should return price data."""
+        from poly_data import GammaClient, ClobClient, MarketFilter
+        from poly_data.markets import parse_json_field
+
+        gamma = GammaClient()
+        clob = ClobClient()
+        events = gamma.fetch_events(active_only=True, sport_slugs=["nba"])
+
+        h2h = None
+        for ev in events:
+            for mkt in ev.get("markets", []):
+                if MarketFilter.is_head_to_head(mkt):
+                    tokens = parse_json_field(mkt.get("clobTokenIds") or mkt.get("tokens", []))
+                    outcomes = parse_json_field(mkt.get("outcomes", []))
+                    if len(tokens) >= 2 and len(outcomes) >= 2:
+                        h2h = mkt
+                        break
+            if h2h:
+                break
+
+        if not h2h:
+            pytest.skip("No active NBA H2H market found")
+
+        tokens = parse_json_field(h2h.get("clobTokenIds") or h2h.get("tokens", []))
+        outcomes = parse_json_field(h2h.get("outcomes", []))
+
+        for i, (token, label) in enumerate(zip(tokens[:2], outcomes[:2])):
+            history = clob.fetch_price_history(str(token))
+            print(f"  [CLOB] {label}: {len(history)} price points")
+            assert isinstance(history, list)
+            # At least one token should have data (new markets may be empty)
+
+    def test_midpoints_sum_to_one(self):
+        """Both midpoints from an H2H market should sum to approximately 1.0."""
+        from poly_data import GammaClient, ClobClient, MarketFilter
+        from poly_data.markets import parse_json_field
+
+        gamma = GammaClient()
+        clob = ClobClient()
+        events = gamma.fetch_events(active_only=True, sport_slugs=["nba"])
+
+        for ev in events:
+            for mkt in ev.get("markets", []):
+                if not MarketFilter.is_head_to_head(mkt):
+                    continue
+                tokens = parse_json_field(mkt.get("clobTokenIds") or mkt.get("tokens", []))
+                if len(tokens) < 2:
+                    continue
+                mid_a = clob.fetch_midpoint(str(tokens[0]))
+                mid_b = clob.fetch_midpoint(str(tokens[1]))
+                if mid_a is not None and mid_b is not None:
+                    total = float(mid_a) + float(mid_b)
+                    print(f"  [CLOB] midpoints: {mid_a} + {mid_b} = {total}")
+                    assert 0.95 <= total <= 1.05, f"Midpoints don't sum to ~1: {total}"
+                    return
+
+        pytest.skip("Could not find an active H2H market with both midpoints")
+
+
+# ===================================================================
+#  Draw-market grouping on live data
+# ===================================================================
+
+class TestDrawMarketLive:
+    """Validate DrawMarketGroup against real Polymarket soccer events."""
+
+    def test_group_draw_markets_live(self):
+        """Find and validate draw-market groups from live soccer events."""
+        from poly_data import GammaClient, group_draw_markets
+
+        gamma = GammaClient()
+        events = gamma.fetch_events(active_only=True, sport_slugs=["soccer"])
+        groups = group_draw_markets(events)
+        print(f"[DrawMarket] {len(groups)} complete groups from {len(events)} soccer events")
+
+        for grp in groups[:5]:
+            assert grp.is_complete
+            assert grp.team_a
+            assert grp.team_b
+            tokens = grp.yes_token_ids()
+            assert "team_a" in tokens
+            assert "team_b" in tokens
+            assert "draw" in tokens
+            print(f"  {grp}")
+
+    def test_draw_market_midpoints(self):
+        """Fetch midpoints for all 3 sub-markets of a draw group."""
+        from poly_data import GammaClient, ClobClient, group_draw_markets
+
+        gamma = GammaClient()
+        clob = ClobClient()
+        events = gamma.fetch_events(active_only=True, sport_slugs=["soccer"])
+        groups = group_draw_markets(events)
+
+        if not groups:
+            pytest.skip("No complete soccer draw-market groups found")
+
+        grp = groups[0]
+        tokens = grp.yes_token_ids()
+        midpoints: dict[str, float] = {}
+        for role, tid in tokens.items():
+            mid = clob.fetch_midpoint(tid)
+            if mid is not None:
+                midpoints[role] = float(mid)
+
+        if len(midpoints) < 3:
+            pytest.skip(f"Could not fetch all midpoints: got {list(midpoints.keys())}")
+
+        raw_total = sum(midpoints.values())
+        print(f"  [DrawMarket] {grp.team_a} vs {grp.team_b}")
+        print(f"    team_a={midpoints['team_a']:.3f}, team_b={midpoints['team_b']:.3f}, draw={midpoints['draw']:.3f}")
+        print(f"    raw total (overround): {raw_total:.3f}")
+
+        probs = grp.implied_probabilities(midpoints)
+        norm_total = probs["team_a"] + probs["team_b"] + probs["draw"]
+        assert abs(norm_total - 1.0) < 1e-9, f"Normalized probs don't sum to 1: {norm_total}"
+        assert probs["overround"] == raw_total

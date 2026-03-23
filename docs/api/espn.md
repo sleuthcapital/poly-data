@@ -23,23 +23,34 @@ ESPNClient(base_url: str = "https://site.api.espn.com/apis/site/v2/sports")
 ### `fetch_scoreboard`
 
 ```python
-def fetch_scoreboard(self, sport: str, date_str: str) -> list[dict]
+def fetch_scoreboard(self, sport: str, date_str: str | None = None) -> list[dict]
 ```
 
 Fetch ESPN scoreboard events for a sport on a date.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `sport` | `str` | Sport key — `"nba"`, `"soccer"`, `"f1"`, etc. |
-| `date_str` | `str` | Date in `YYYYMMDD` format |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `sport` | `str` | — | Sport key — `"nba"`, `"soccer"`, `"f1"`, etc. |
+| `date_str` | `str \| None` | `None` | Date in `YYYYMMDD` format, or `None` for current matchday |
 
 **Returns:** `list[dict]` — ESPN event objects. Results are cached in memory.
 
 ```python
 espn = ESPNClient()
+
+# Specific date
 events = espn.fetch_scoreboard("nba", "20260323")
-print(f"{len(events)} games")
+print(f"{len(events)} NBA games")
+
+# Current matchday (important for soccer)
+soccer = espn.fetch_scoreboard("soccer")  # date_str=None
+print(f"{len(soccer)} soccer games")
 ```
+
+!!! warning "Soccer date handling"
+    ESPN soccer scoreboards use **matchday windows**, not UTC dates.
+    Passing a specific date may return 0 events even when games are on.
+    Use `date_str=None` to get the current round's games.
 
 !!! note "Soccer queries 8 leagues"
     Passing `sport="soccer"` queries EPL, La Liga, Bundesliga, Serie A, Ligue 1, MLS, UCL, and UEL simultaneously.

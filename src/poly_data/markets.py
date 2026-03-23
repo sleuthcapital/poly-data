@@ -152,6 +152,172 @@ class MarketFilter:
         return MarketFilter.is_head_to_head(market)
 
 
+class DrawMarketGroup:
+    """Links the three separate Yes/No markets that Polymarket creates for
+    soccer (and other draw-eligible sports) into a single logical match.
+
+    Polymarket represents a soccer match as three independent binary markets
+    under the same event::
+
+        "Will Team A win on YYYY-MM-DD?"   → Yes/No
+        "Will Team B win on YYYY-MM-DD?"   → Yes/No
+        "Will Team A vs. Team B end in a draw?"  → Yes/No
+
+    These markets have *separate* ``conditionId`` values and are not
+    formally linked by the API.  ``DrawMarketGroup`` groups them by
+    scanning the event's ``markets`` list and exposes unified helpers
+    for price comparison and implied-probability reconciliation.
+
+    Parameters
+    ----------
+    event : dict
+        A Gamma API event dict with nested ``markets``.
+    """
+
+    def __init__(self, event: dict[str, Any]) -> None:
+        self.event = event
+        self.team_a_market: dict[str, Any] | None = None
+        self.team_b_market: dict[str, Any] | None = None
+        self.draw_market: dict[str, Any] | None = None
+        self.team_a: str = ""
+        self.team_b: str = ""
+        self._parse(event)
+
+    # ── Parsing ───────────────────────────────────────────────────────
+
+    def _parse(self, event: dict[str, Any]) -> None:
+        """Identify team-A-win, team-B-win, and draw markets within an event."""
+        markets = event.get("markets", [])
+        win_markets: list[dict[str, Any]] = []
+        draw_market: dict[str, Any] | None = None
+
+        for mkt in markets:
+            q = mkt.get("question", "").lower()
+            outcomes = parse_json_field(mkt.get("outcomes", []))
+
+            # Must be binary Yes/No
+            if not isinstance(outcomes, list) or len(outcomes) != 2:
+                continue
+            oset = {o.strip().lower() for o in outcomes}
+            if oset != {"yes", "no"}:
+                continue
+
+            if "draw" in q:
+                draw_market = mkt
+            elif "win" in q or "beat" in q:
+                win_markets.append(mkt)
+
+        self.draw_market = draw_market
+
+        if len(win_markets) == 2:
+            self.team_a_market = win_markets[0]
+            self.team_b_market = win_markets[1]
+            self.team_a = self._extract_team_name(win_markets[0])
+            self.team_b = self._extract_team_name(win_markets[1])
+
+    @staticmethod
+    def _extract_team_name(market: dict[str, Any]) -> str:
+        """Extract team name from "Will <team> win on …?" question."""
+        q = market.get("question", "")
+        # Pattern: "Will <team> win on YYYY-MM-DD?"
+        # or      "Will <team> beat <other>?"
+        import re
+        # Try "Will X win on ..."
+        m = re.match(r"Will\s+(.+?)\s+win\b", q, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+        # Try "Will X beat Y?"
+        m = re.match(r"Will\s+(.+?)\s+beat\b", q, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+        return q
+
+    # ── Public API ────────────────────────────────────────────────────
+
+    @property
+    def is_complete(self) -> bool:
+        """True if all three markets (team A win, team B win, draw) are found."""
+        return all([self.team_a_market, self.team_b_market, self.draw_market])
+
+    @property
+    def teams(self) -> tuple[str, str]:
+        """Return ``(team_a, team_b)`` names."""
+        return (self.team_a, self.team_b)
+
+    def yes_token_ids(self) -> dict[str, str]:
+        """Return a mapping ``{role: token_id}`` for the Yes token of each market.
+
+        Keys are ``"team_a"``, ``"team_b"``, ``"draw"``.
+        """
+        result: dict[str, str] = {}
+        for role, mkt in [("team_a", self.team_a_market),
+                          ("team_b", self.team_b_market),
+                          ("draw", self.draw_market)]:
+            if mkt is None:
+                continue
+            tokens = parse_json_field(mkt.get("clobTokenIds") or mkt.get("tokens", []))
+            outcomes = parse_json_field(mkt.get("outcomes", []))
+            if isinstance(tokens, list) and tokens and isinstance(outcomes, list):
+                # Find the "Yes" token index
+                for i, o in enumerate(outcomes):
+                    if o.strip().lower() == "yes" and i < len(tokens):
+                        tid = tokens[i] if isinstance(tokens[i], str) else str(tokens[i])
+                        result[role] = tid
+                        break
+        return result
+
+    def implied_probabilities(self, midpoints: dict[str, float]) -> dict[str, float]:
+        """Given midpoint prices for each role, compute implied probabilities.
+
+        Parameters
+        ----------
+        midpoints : dict
+            E.g. ``{"team_a": 0.45, "team_b": 0.30, "draw": 0.28}``
+
+        Returns
+        -------
+        dict
+            Normalized probabilities that sum to ~1.0, plus ``"overround"``
+            showing the raw total (indicates market efficiency).
+        """
+        raw_total = sum(midpoints.values())
+        normed = {k: v / raw_total if raw_total > 0 else 0.0 for k, v in midpoints.items()}
+        normed["overround"] = raw_total
+        return normed
+
+    def condition_ids(self) -> dict[str, str]:
+        """Return ``{role: condition_id}`` for each sub-market."""
+        result: dict[str, str] = {}
+        for role, mkt in [("team_a", self.team_a_market),
+                          ("team_b", self.team_b_market),
+                          ("draw", self.draw_market)]:
+            if mkt:
+                cid = mkt.get("conditionId") or mkt.get("condition_id", "")
+                if cid:
+                    result[role] = cid
+        return result
+
+    def __repr__(self) -> str:
+        status = "complete" if self.is_complete else "partial"
+        return f"DrawMarketGroup({self.team_a} vs {self.team_b}, {status})"
+
+
+def group_draw_markets(events: list[dict[str, Any]]) -> list[DrawMarketGroup]:
+    """Scan events and return groups for all soccer-style draw matches.
+
+    Only events that produce a *complete* group (all 3 markets found) are
+    included.
+    """
+    groups: list[DrawMarketGroup] = []
+    for ev in events:
+        if not MarketFilter.is_soccer_event(ev):
+            continue
+        grp = DrawMarketGroup(ev)
+        if grp.is_complete:
+            groups.append(grp)
+    return groups
+
+
 def extract_winner(market: dict[str, Any]) -> str | None:
     """Extract the winning outcome from a resolved market.
 

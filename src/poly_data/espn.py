@@ -73,22 +73,25 @@ class ESPNClient:
     # ------------------------------------------------------------------
     # Scoreboard
     # ------------------------------------------------------------------
-    def fetch_scoreboard(self, sport: str, date_str: str) -> list[dict[str, Any]]:
+    def fetch_scoreboard(self, sport: str, date_str: str | None = None) -> list[dict[str, Any]]:
         """Fetch ESPN scoreboard events for a sport on a specific date.
 
         Parameters
         ----------
         sport : str
             Sport key (``"nba"``, ``"soccer"``, etc.).
-        date_str : str
-            Date string ``YYYYMMDD``.
+        date_str : str | None
+            Date string ``YYYYMMDD``.  If ``None``, returns the current
+            matchday (ESPN's default), which is especially useful for soccer
+            where the ``dates`` parameter doesn't always match UTC calendar
+            dates.
 
         Returns
         -------
         list[dict]
             ESPN event dicts from the scoreboard endpoint.
         """
-        cache_key = f"{sport}:{date_str}"
+        cache_key = f"{sport}:{date_str or 'default'}"
         if cache_key in _espn_cache:
             return _espn_cache[cache_key]
 
@@ -97,13 +100,24 @@ class ESPNClient:
             return []
 
         events: list[dict[str, Any]] = []
+        seen_ids: set[str] = set()
         for path in paths:
             url = f"{self.base_url}/{path}/scoreboard"
+            params: dict[str, Any] = {}
+            if date_str is not None:
+                params["dates"] = date_str
             try:
-                data = get_json(url, params={"dates": date_str})
-                events.extend(data.get("events", []) if isinstance(data, dict) else [])
+                data = get_json(url, params=params or None)
+                for ev in data.get("events", []) if isinstance(data, dict) else []:
+                    eid = ev.get("id", "")
+                    if eid not in seen_ids:
+                        seen_ids.add(eid)
+                        events.append(ev)
             except Exception:
                 logger.debug("ESPN fetch failed for %s on %s", path, date_str, exc_info=True)
+
+        _espn_cache[cache_key] = events
+        return events
 
         _espn_cache[cache_key] = events
         return events
@@ -198,6 +212,17 @@ class ESPNClient:
 
         anchor = datetime.strptime(anchor_date, "%Y-%m-%d")
 
+        # For soccer, also try the default matchday (no date param) since
+        # ESPN soccer uses matchday windows that don't align with UTC calendar dates.
+        if sport == "soccer":
+            default_events = self.fetch_scoreboard(sport, None)
+            for event in default_events:
+                espn_teams = self.extract_teams(event)
+                if self.teams_match(poly_teams, espn_teams):
+                    game_time = event.get("date")
+                    if game_time:
+                        return game_time
+
         for delta in range(-search_days, search_days + 1):
             check_date = anchor + timedelta(days=delta)
             date_str = check_date.strftime("%Y%m%d")
@@ -215,7 +240,7 @@ class ESPNClient:
     # ------------------------------------------------------------------
     # DataFrame helper
     # ------------------------------------------------------------------
-    def fetch_scoreboard_df(self, sport: str, date_str: str) -> pd.DataFrame:
+    def fetch_scoreboard_df(self, sport: str, date_str: str | None = None) -> pd.DataFrame:
         """Like :meth:`fetch_scoreboard` but return a DataFrame."""
         events = self.fetch_scoreboard(sport, date_str)
         if not events:
