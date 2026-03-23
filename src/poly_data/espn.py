@@ -15,10 +15,12 @@ logger = logging.getLogger(__name__)
 
 # ESPN sport paths — one per league.
 ESPN_SPORT_PATHS: dict[str, list[str]] = {
+    # --- Traditional US sports (P0, live) ---
     "nba": ["basketball/nba"],
     "nfl": ["football/nfl"],
     "mlb": ["baseball/mlb"],
     "nhl": ["hockey/nhl"],
+    # --- Soccer (P0, live) ---
     "soccer": [
         "soccer/eng.1",     # EPL
         "soccer/esp.1",     # La Liga
@@ -29,8 +31,27 @@ ESPN_SPORT_PATHS: dict[str, list[str]] = {
         "soccer/uefa.champions",  # UCL
         "soccer/uefa.europa",     # UEL
     ],
-    "mma": [],   # No ESPN scoreboard for MMA
-    "tennis": [],  # No standard ESPN scoreboard
+    # --- Combat sports (P1) ---
+    "mma": ["mma/ufc"],
+    # --- College sports (P1) ---
+    "ncaam": ["basketball/mens-college-basketball"],
+    "ncaaf": ["football/college-football"],
+    # --- Other traditional (P2) ---
+    "wnba": ["basketball/wnba"],
+    "tennis": ["tennis/atp"],
+    "golf": ["golf/pga"],
+    "f1": ["racing/f1"],
+    "cricket": ["cricket/icc"],  # Seasonal — may return 0 events outside tournaments
+    # --- Esports — no ESPN coverage, use PandaScore ---
+    "cs2": [],
+    "valorant": [],
+    "lol": [],
+    "dota2": [],
+    "overwatch": [],
+    "cod": [],
+    # --- No ESPN endpoint found ---
+    "rugby": [],
+    "boxing": [],
 }
 
 # In-memory cache to avoid repeated ESPN calls for the same date/sport.
