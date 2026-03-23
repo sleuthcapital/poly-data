@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "poly-data"
+version = "0.1.0"
+description = "Polymarket data client — Gamma, CLOB, Data API & ESPN wrappers returning DataFrames/Parquet"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Sleuth Capital" }]
+keywords = ["polymarket", "prediction-markets", "sports-betting", "data"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business :: Financial",
+]
+dependencies = [
+    "requests>=2.28",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "responses>=0.23",
+    "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/sleuthcapital/poly-data"
+Repository = "https://github.com/sleuthcapital/poly-data"
+Issues = "https://github.com/sleuthcapital/poly-data/issues"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
