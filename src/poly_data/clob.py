@@ -85,7 +85,9 @@ class ClobClient:
         """
         from poly_data.markets import parse_json_field
 
-        tokens = parse_json_field(market.get("tokens", []))
+        # Gamma API stores token IDs in 'clobTokenIds' (JSON string), fall back to 'tokens'
+        raw_tokens = market.get("clobTokenIds") or market.get("tokens", [])
+        tokens = parse_json_field(raw_tokens)
         outcomes = parse_json_field(market.get("outcomes", []))
 
         snapshot: dict[str, Any] = {"condition_id": market.get("conditionId", "")}

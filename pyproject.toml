@@ -29,6 +29,7 @@ dev = [
     "pytest>=7.0",
     "pytest-cov",
     "responses>=0.23",
+    "python-dotenv>=1.0",
     "ruff",
 ]
 
@@ -46,3 +47,6 @@ select = ["E", "F", "I", "W"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "live: tests that hit real APIs (deselect with -m 'not live')",
+]
