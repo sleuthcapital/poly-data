@@ -278,6 +278,17 @@ def _add_game_time_lines(ax, game_start: str | None, game_end: str | None):
             pass
 
 
+def _trim_pregame(df: pd.DataFrame, game_start: str | None, hours_before: float = 6) -> pd.DataFrame:
+    """Trim price history to start *hours_before* before game_start."""
+    if df.empty or not game_start:
+        return df
+    try:
+        cutoff = pd.to_datetime(game_start, utc=True) - pd.Timedelta(hours=hours_before)
+        return df[df["timestamp"] >= cutoff].reset_index(drop=True)
+    except Exception:
+        return df
+
+
 def plot_price_history(data: dict):
     """Price line chart with BOTH outcomes labeled (price-data.md)."""
     df_a = _price_df(data["price_history_a"])
@@ -285,6 +296,10 @@ def plot_price_history(data: dict):
     if df_a.empty and df_b.empty:
         print("  ⚠ No price history data")
         return
+
+    # Trim to ~6 h before game start so the game window dominates
+    df_a = _trim_pregame(df_a, data.get("game_start"))
+    df_b = _trim_pregame(df_b, data.get("game_start"))
 
     title = data["h2h_market"]["question"] if data["h2h_market"] else "Market"
     label_a, label_b = data["label_a"], data["label_b"]
@@ -378,6 +393,10 @@ def plot_price_line(data: dict):
     if df_a.empty and df_b.empty:
         print("  ⚠ No price history for price_line")
         return
+
+    # Trim to ~6 h before game start so the game window dominates
+    df_a = _trim_pregame(df_a, data.get("game_start"))
+    df_b = _trim_pregame(df_b, data.get("game_start"))
 
     title = data["h2h_market"]["question"] if data["h2h_market"] else "Market"
     label_a, label_b = data["label_a"], data["label_b"]
